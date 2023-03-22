@@ -37,6 +37,8 @@ public class Organizer {
 	//optional
 	private String website;
 	
+	private boolean isDeleted;
+	
 	@OneToMany
 	private List<Location> locations = new ArrayList<Location>();
 	

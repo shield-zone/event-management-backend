@@ -1,4 +1,4 @@
-package com.shield.eventmanagement.repositories;
+package com.shield.eventmanagement.repositories.attendee;
 
 import com.shield.eventmanagement.entities.Attendee;
 import org.springframework.data.jpa.repository.JpaRepository;

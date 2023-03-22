@@ -1,7 +1,7 @@
-package com.shield.eventmanagement.services;
+package com.shield.eventmanagement.services.attendee;
 
 import com.shield.eventmanagement.entities.Attendee;
-import com.shield.eventmanagement.repositories.AttendeeRepository;
+import com.shield.eventmanagement.repositories.attendee.AttendeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

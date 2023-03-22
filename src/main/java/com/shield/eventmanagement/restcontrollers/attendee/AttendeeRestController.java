@@ -1,7 +1,7 @@
-package com.shield.eventmanagement.restcontrollers;
+package com.shield.eventmanagement.restcontrollers.attendee;
 
 import com.shield.eventmanagement.entities.Attendee;
-import com.shield.eventmanagement.services.AttendeeService;
+import com.shield.eventmanagement.services.attendee.AttendeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

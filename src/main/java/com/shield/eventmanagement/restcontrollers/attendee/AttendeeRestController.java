@@ -35,6 +35,11 @@ public class AttendeeRestController {
         return service.getAttendeesByEventName(eventName);
     }
 
+    @PutMapping("cancel-event-registration")
+    public Optional<Attendee> cancelRegistrationByEventName(@RequestBody Attendee attendee) {
+        return service.cancelRegistrationByEventName(attendee);
+    }
+
     @GetMapping("get-cancelled-attendees-by-event/{eventName}")
     public List<Attendee> getCancelledAttendeesByEventName(@PathVariable String eventName) {
         return service.getCancelledAttendeesByEventName(eventName);

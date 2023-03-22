@@ -34,7 +34,7 @@ public class Event {
 	private Double eventPrice;
 	
 	@ManyToMany
-	private List<Organizer> organizers = new ArrayList<Organizer>();
+	private List<Long> organizerIds = new ArrayList<Long>();
 	
 }
 

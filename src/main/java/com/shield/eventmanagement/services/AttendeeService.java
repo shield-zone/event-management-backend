@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -34,8 +35,12 @@ public class AttendeeService {
         return repository.getAttendeesByEventNameContainingIgnoreCase(eventName);
     }
 
-    public List<Attendee> getCancelledRegistrationAttendees(boolean cancelled) {
-        return repository.getAttendeesByCancelledRegistration(cancelled);
+    public List<Attendee> getCancelledAttendeesByEventName(String eventName) {
+        return repository
+                .getCancelledAttendeesByEventNameContainingIgnoreCase(eventName)
+                .stream()
+                .filter(Attendee::isCancelledRegistration)
+                .collect(Collectors.toList());
     }
 
     public Attendee insertAttendee(Attendee attendee) {

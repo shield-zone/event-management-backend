@@ -1,5 +1,7 @@
 package com.shield.eventmanagement.restcontrollers.organizer;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,7 @@ public class OrganizerController {
 
 	
 	@PostMapping("/create-organizer")
-	public ResponseEntity<?> createOrganizer(@RequestBody OrganizerRequest organizerRequest)
+	public ResponseEntity<?> createOrganizer(@Valid@RequestBody OrganizerRequest organizerRequest)
 	{
 		
 		return new ResponseEntity<>(organizerRequest, HttpStatus.OK);

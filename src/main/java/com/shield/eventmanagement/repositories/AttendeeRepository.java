@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
     Optional<Attendee> findByEmail(String email);
-    List<Attendee> getAttendeesByName(String name);
-    List<Attendee> getAttendeesByLocation(String location);
-    List<Attendee> getAttendeesByEventName(String eventName);
-    List<Attendee> getAttendeesByCancelledRegistration(boolean cancelled);
+    List<Attendee> getAttendeesByNameContainingIgnoreCase(String name);
+    List<Attendee> getAttendeesByLocationContainingIgnoreCase(String location);
+    List<Attendee> getAttendeesByEventNameContainingIgnoreCase(String eventName);
+    List<Attendee> getCancelledAttendeesByEventNameContainingIgnoreCase(String eventName);
 }

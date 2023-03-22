@@ -23,15 +23,15 @@ public class AttendeeService {
     }
 
     public List<Attendee> getAttendeesByName(String name) {
-        return repository.getAttendeesByName(name);
+        return repository.getAttendeesByNameContainingIgnoreCase(name);
     }
 
     public List<Attendee> getAttendeesByLocation(String location) {
-        return repository.getAttendeesByLocation(location);
+        return repository.getAttendeesByLocationContainingIgnoreCase(location);
     }
 
     public List<Attendee> getAttendeesByEventName(String eventName) {
-        return repository.getAttendeesByEventName(eventName);
+        return repository.getAttendeesByEventNameContainingIgnoreCase(eventName);
     }
 
     public List<Attendee> getCancelledRegistrationAttendees(boolean cancelled) {

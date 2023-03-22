@@ -35,6 +35,19 @@ public class AttendeeService {
         return repository.getAttendeesByEventNameContainingIgnoreCase(eventName);
     }
 
+    public Optional<Attendee> cancelRegistrationByEventName(Attendee attendee) {
+        Optional<Attendee> tempAttendeeOptional = repository.findByEmail(attendee.getEmail());
+        if (!tempAttendeeOptional.isPresent())
+            return Optional.empty();
+
+        Attendee tempAttendee = tempAttendeeOptional.get();
+        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
+            return Optional.empty();
+
+        attendee.setCancelledRegistration(true);
+        return Optional.of(repository.saveAndFlush(attendee));
+    }
+
     public List<Attendee> getCancelledAttendeesByEventName(String eventName) {
         return repository
                 .getCancelledAttendeesByEventNameContainingIgnoreCase(eventName)
@@ -48,14 +61,14 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> updateAttendee(Attendee attendee) {
-        Optional<Attendee> tempAttendee = repository.findByEmail(attendee.getEmail());
-        if (!tempAttendee.isPresent()) {
+        Optional<Attendee> tempAttendeeOptional = repository.findByEmail(attendee.getEmail());
+        if (!tempAttendeeOptional.isPresent())
             return Optional.empty();
-        }
 
-        if (tempAttendee.get().getAttendeeId() != attendee.getAttendeeId()) {
+        Attendee tempAttendee = tempAttendeeOptional.get();
+
+        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
             return Optional.empty();
-        }
 
         return Optional.of(repository.saveAndFlush(attendee));
     }

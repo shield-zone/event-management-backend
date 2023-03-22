@@ -100,8 +100,10 @@ public class OrganizerServiceImpl implements OrganizerService {
 	@Override
 	public String delete(Long organizerId) {
 		
-		organizerDao.delete(organizerId);
-		return "Organizer Deletecd Successfully";
+		Organizer organizer = organizerDao.fetchById(organizerId);
+		organizer.setDeleted(true);
+	    organizer = organizerDao.save(organizer);
+		return "Organizer Deleted Successfully";
 	}
 
 }

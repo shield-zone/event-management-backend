@@ -14,7 +14,7 @@ public class Attendee {
 
     @Id
     @GeneratedValue
-    Long attendeeId;
+    long attendeeId;
 
     @Transient
     String organizerName;
@@ -34,4 +34,6 @@ public class Attendee {
     String email;
 
     int numberOfMember;
+
+    boolean cancelledRegistration;
 }

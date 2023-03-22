@@ -33,4 +33,25 @@ public class AttendeeService {
     public List<Attendee> getAttendeesByEventName(String eventName) {
         return repository.getAttendeesByEventName(eventName);
     }
+
+    public List<Attendee> getCancelledRegistrationAttendees(boolean cancelled) {
+        return repository.getAttendeesByCancelledRegistration(cancelled);
+    }
+
+    public Attendee insertAttendee(Attendee attendee) {
+        return repository.saveAndFlush(attendee);
+    }
+
+    public Optional<Attendee> updateAttendee(Attendee attendee) {
+        Optional<Attendee> tempAttendee = repository.findByEmail(attendee.getEmail());
+        if (!tempAttendee.isPresent()) {
+            return Optional.empty();
+        }
+
+        if (tempAttendee.get().getAttendeeId() != attendee.getAttendeeId()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(repository.saveAndFlush(attendee));
+    }
 }

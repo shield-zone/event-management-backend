@@ -13,4 +13,5 @@ public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
     List<Attendee> getAttendeesByName(String name);
     List<Attendee> getAttendeesByLocation(String location);
     List<Attendee> getAttendeesByEventName(String eventName);
+    List<Attendee> getAttendeesByCancelledRegistration(boolean cancelled);
 }

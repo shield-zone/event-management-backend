@@ -34,7 +34,7 @@ public class Location {
 	private String country;
 	
 	@ManyToMany
-	private List<Organizer> organizers = new ArrayList<Organizer>();
+	private Organizer organizer = new Organizer();
 	
 
 }

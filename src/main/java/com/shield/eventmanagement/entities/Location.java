@@ -21,7 +21,7 @@ public class Location {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String locationId;
+	private Long locationId;
 	
 	private String locationName;
 	

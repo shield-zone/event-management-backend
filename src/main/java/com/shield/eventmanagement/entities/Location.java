@@ -21,7 +21,7 @@ public class Location {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String locationId;
+	private Long locationId;
 	
 	private String locationName;
 	
@@ -34,7 +34,7 @@ public class Location {
 	private String country;
 	
 	@ManyToMany
-	private List<Organizer> organizers = new ArrayList<Organizer>();
+	private Organizer organizer = new Organizer();
 	
 
 }

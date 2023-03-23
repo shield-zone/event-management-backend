@@ -19,8 +19,12 @@ public class AttendeeService {
     @Autowired
     AttendeeRepository repository;
 
-    public Optional<Attendee> findByEmail(String email) {
+    public List<Attendee> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    public List<Attendee> findByEmailAndEventName(String email, String eventName) {
+        return repository.findAttendeeByEmailAndEventName(email, eventName);
     }
 
     public List<Attendee> getAttendeesByName(String name) {
@@ -36,7 +40,12 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> cancelRegistrationByEventName(Attendee attendee) {
-        Optional<Attendee> tempAttendeeOptional = repository.findByEmail(attendee.getEmail());
+        Optional<Attendee> tempAttendeeOptional = repository
+                .findAttendeeByEmailAndEventId(
+                        attendee.getEmail(),
+                        attendee.getEvent().getEventId()
+                );
+
         if (!tempAttendeeOptional.isPresent())
             return Optional.empty();
 
@@ -61,7 +70,12 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> updateAttendee(Attendee attendee) {
-        Optional<Attendee> tempAttendeeOptional = repository.findByEmail(attendee.getEmail());
+        Optional<Attendee> tempAttendeeOptional = repository
+                .findAttendeeByEmailAndEventId(
+                        attendee.getEmail(),
+                        attendee.getEvent().getEventId()
+                );
+
         if (!tempAttendeeOptional.isPresent())
             return Optional.empty();
 

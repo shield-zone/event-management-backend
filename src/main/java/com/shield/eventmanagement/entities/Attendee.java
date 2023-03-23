@@ -1,6 +1,7 @@
 package com.shield.eventmanagement.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Attendee {
 
     @Id
@@ -19,13 +21,17 @@ public class Attendee {
     @Transient
     String organizerName;
 
-    Long organizerId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "organizer_id")
+    Organizer organizer;
 
-    @Column(length = 50)
-    String eventName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
+    Event event;
 
-    @Column(length = 50)
-    String location;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id")
+    Location location;
 
     @Column(length = 50)
     String name;

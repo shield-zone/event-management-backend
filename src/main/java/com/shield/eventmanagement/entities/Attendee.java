@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,13 +27,13 @@ public class Attendee {
     @JoinColumn(name = "organizer_id")
     Organizer organizer;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
-    Event event;
+    List<Event> event = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
-    Location location;
+    List<Location> location;
 
     @Column(length = 50)
     String name;

@@ -19,8 +19,12 @@ public class AttendeeService {
     @Autowired
     AttendeeRepository repository;
 
-    public Optional<Attendee> findByEmail(String email) {
+    public List<Attendee> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    public List<Attendee> findByEmailAndEventName(String email, String eventName) {
+        return repository.findAttendeeByEmailAndEventName(email, eventName);
     }
 
     public List<Attendee> getAttendeesByName(String name) {
@@ -33,6 +37,24 @@ public class AttendeeService {
 
     public List<Attendee> getAttendeesByEventName(String eventName) {
         return repository.getAttendeesByEventNameContainingIgnoreCase(eventName);
+    }
+
+    public Optional<Attendee> cancelRegistrationByEventName(Attendee attendee) {
+        Optional<Attendee> tempAttendeeOptional = repository
+                .findAttendeeByEmailAndEventId(
+                        attendee.getEmail(),
+                        attendee.getEvent().getEventId()
+                );
+
+        if (!tempAttendeeOptional.isPresent())
+            return Optional.empty();
+
+        Attendee tempAttendee = tempAttendeeOptional.get();
+        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
+            return Optional.empty();
+
+        attendee.setCancelledRegistration(true);
+        return Optional.of(repository.saveAndFlush(attendee));
     }
 
     public List<Attendee> getCancelledAttendeesByEventName(String eventName) {
@@ -48,14 +70,19 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> updateAttendee(Attendee attendee) {
-        Optional<Attendee> tempAttendee = repository.findByEmail(attendee.getEmail());
-        if (!tempAttendee.isPresent()) {
-            return Optional.empty();
-        }
+        Optional<Attendee> tempAttendeeOptional = repository
+                .findAttendeeByEmailAndEventId(
+                        attendee.getEmail(),
+                        attendee.getEvent().getEventId()
+                );
 
-        if (tempAttendee.get().getAttendeeId() != attendee.getAttendeeId()) {
+        if (!tempAttendeeOptional.isPresent())
             return Optional.empty();
-        }
+
+        Attendee tempAttendee = tempAttendeeOptional.get();
+
+        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
+            return Optional.empty();
 
         return Optional.of(repository.saveAndFlush(attendee));
     }

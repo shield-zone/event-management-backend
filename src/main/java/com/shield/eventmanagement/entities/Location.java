@@ -23,7 +23,7 @@ public class Location {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String locationId;
+	private Long locationId;
 	
 	private String locationName;
 	
@@ -34,7 +34,6 @@ public class Location {
 	private String state;
 	
 	private String country;
-	
 //	@ManyToMany
 //	@JoinTable(
 //	        name = "location_organizer",
@@ -42,6 +41,5 @@ public class Location {
 //	        inverseJoinColumns = @JoinColumn(name = "organizer_id")
 //	    )
 //	private List<Organizer> organizers = new ArrayList<Organizer>();
-	
 
 }

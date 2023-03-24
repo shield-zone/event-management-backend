@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundException;
+import com.shield.eventmanagement.exceptions.user.UserNotFoundException;
 import com.shield.eventmanagement.payload.ValidationsErrorResponse;
 import com.shield.eventmanagement.payload.organizer.ErrorResponse;
 
@@ -42,7 +43,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<?> userNotFoundHadler(UsernameNotFoundException ex)
+	public ResponseEntity<?> userNameNotFoundHadler(UsernameNotFoundException ex)
 	{
 		ErrorResponse response = ErrorResponse.builder()
 								 .message(ex.getMessage())
@@ -53,6 +54,16 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(InvalidException.class)
 	public ResponseEntity<?> invalidExceptionHadler(InvalidException ex)
+	{
+		ErrorResponse response = ErrorResponse.builder()
+								 .message(ex.getMessage())
+								 .status(HttpStatus.BAD_REQUEST)
+								 .build();
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<?> userNotFound(UserNotFoundException ex)
 	{
 		ErrorResponse response = ErrorResponse.builder()
 								 .message(ex.getMessage())

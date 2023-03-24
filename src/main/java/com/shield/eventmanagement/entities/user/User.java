@@ -23,6 +23,8 @@ public class User {
 	
 	private String userName;
 	
+	private String name;
+	
 	private String password;
 	
 	private boolean isActive;

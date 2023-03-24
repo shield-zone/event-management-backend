@@ -22,8 +22,6 @@ public class OrganizerDaoImpl implements OrganizerDao{
 		return organizer;
 	}
 
-	
-
 	@Override
 	public String delete(Long organizerId) {
 	
@@ -45,16 +43,12 @@ public class OrganizerDaoImpl implements OrganizerDao{
 		return organizer;
 	}
 
-
-
 	@Override
 	public Organizer fetchByUsername(String username) {
 		
 		Organizer organizer = organizerRepository.findByEmailId(username);
 		return organizer;
 	}
-
-
 
 	@Override
 	public Organizer fetchByWebsite(String website) {
@@ -63,26 +57,12 @@ public class OrganizerDaoImpl implements OrganizerDao{
 		return organizer;
 	}
 
-
-
 	@Override
 	public List<Organizer> fetchByRating(String rating) {
 		
 		List<Organizer> organizerList = organizerRepository.findByRating(rating);
 		return organizerList;
 	}
-
-
-
-	@Override
-	public List<Organizer> fetchByIsDeleted(boolean isDeleted) {
-		
-		List<Organizer> organizerList = organizerRepository.findByIsDeleted(isDeleted);
-		
-		return organizerList;
-	}
-
-
 
 	@Override
 	public List<Organizer> fetchAll() {

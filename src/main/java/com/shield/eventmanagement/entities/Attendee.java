@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Data
@@ -39,6 +42,14 @@ public class Attendee {
     @Column(length = 50)
     String email;
 
+//    @ManyToMany
+//	@JoinTable(
+//	        name = "attendee_organizer",
+//	        joinColumns = @JoinColumn(name = "attendee_id"),
+//	        inverseJoinColumns = @JoinColumn(name = "organizer_id")
+//	    )
+//	private List<Organizer> organizers = new ArrayList<Organizer>();
+    
     int numberOfMember;
 
     boolean cancelledRegistration;

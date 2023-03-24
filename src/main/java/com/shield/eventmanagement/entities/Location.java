@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
@@ -32,9 +34,12 @@ public class Location {
 	private String state;
 	
 	private String country;
-	
-	@ManyToMany
-	private Organizer organizer = new Organizer();
-	
+//	@ManyToMany
+//	@JoinTable(
+//	        name = "location_organizer",
+//	        joinColumns = @JoinColumn(name = "location_id"),
+//	        inverseJoinColumns = @JoinColumn(name = "organizer_id")
+//	    )
+//	private List<Organizer> organizers = new ArrayList<Organizer>();
 
 }

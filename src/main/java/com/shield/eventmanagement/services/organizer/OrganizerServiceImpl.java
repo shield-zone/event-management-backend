@@ -1,10 +1,13 @@
 package com.shield.eventmanagement.services.organizer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shield.eventmanagement.dao.organizer.OrganizerDao;
 import com.shield.eventmanagement.entities.Organizer;
+import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundException;
 
 @Service
 public class OrganizerServiceImpl implements OrganizerService {
@@ -38,16 +41,6 @@ public class OrganizerServiceImpl implements OrganizerService {
 			if(!phoneNumber.matches(regexPattern))
 			{
 				return false;
-			}
-		}
-		if(organizer.getEmailId()!=null)
-		{
-			String regexPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-			String email = organizer.getEmailId();
-			
-			if (!email.matches(regexPattern))
-			{
-			    return false;
 			}
 		}
 		return true;
@@ -98,12 +91,68 @@ public class OrganizerServiceImpl implements OrganizerService {
 	}
 
 	@Override
-	public String delete(Long organizerId) {
+	public String delete(Long organizerId) throws OrganizerNotFoundException {
 		
 		Organizer organizer = organizerDao.fetchById(organizerId);
+		if(organizer==null)
+		{
+			throw new OrganizerNotFoundException("Organizer with the given Id is not found on Backend");
+		}
 		organizer.setDeleted(true);
 	    organizer = organizerDao.save(organizer);
 		return "Organizer Deleted Successfully";
+	}
+
+	@Override
+	public Organizer fetchById(Long organizerId) throws OrganizerNotFoundException {
+		Organizer organizer = organizerDao.fetchById(organizerId);
+		if(organizer==null)
+		{
+			throw new OrganizerNotFoundException();
+		}
+		return organizer;
+	}
+
+	@Override
+	public Organizer fetchByUsername(String username) throws OrganizerNotFoundException {
+		
+		Organizer organizer = organizerDao.fetchByUsername(username);
+		if(organizer==null)
+		{
+			throw new OrganizerNotFoundException();
+		}
+		return organizer;
+	}
+
+	@Override
+	public Organizer fetchByWebsite(String website) throws OrganizerNotFoundException {
+		
+		Organizer organizer = organizerDao.fetchByWebsite(website);
+		if(organizer==null)
+		{
+			throw new OrganizerNotFoundException();
+		}
+		
+		return organizer;
+	}
+
+	@Override
+	public List<Organizer> fetchByRating(String rating) {
+		
+		List<Organizer> organizerList = organizerDao.fetchByRating(rating);
+		return organizerList;
+	}
+
+	@Override
+	public List<Organizer> fetchByIsDeleted(boolean isDeleted) {
+		List<Organizer> organizerList = organizerDao.fetchByIsDeleted(isDeleted);
+		return organizerList;
+	}
+
+	@Override
+	public List<Organizer> fetchAll() {
+		List<Organizer> organizerList = organizerDao.fetchAll();
+		return organizerList;
 	}
 
 }

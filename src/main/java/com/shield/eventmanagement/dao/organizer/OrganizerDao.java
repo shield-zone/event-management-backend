@@ -1,5 +1,7 @@
 package com.shield.eventmanagement.dao.organizer;
 
+import java.util.List;
+
 import com.shield.eventmanagement.entities.Organizer;
 
 public interface OrganizerDao {
@@ -9,4 +11,14 @@ public interface OrganizerDao {
 	String delete(Long organizerId);
 	
 	Organizer fetchById(Long organizerId);
+	
+	Organizer fetchByUsername(String username);
+	
+	Organizer fetchByWebsite(String website);
+	
+	List<Organizer> fetchByRating(String rating);
+
+	List<Organizer> fetchByIsDeleted(boolean isDeleted);	
+	
+	List<Organizer> fetchAll();
 }

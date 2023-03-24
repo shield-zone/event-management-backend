@@ -1,7 +1,6 @@
 package com.shield.eventmanagement.request.user;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +14,9 @@ public class UserDto {
 
 	@NotEmpty
     private String userName;
+	
+	@NotEmpty
+	private String name;
 	
 	@NotEmpty
 	private String password;

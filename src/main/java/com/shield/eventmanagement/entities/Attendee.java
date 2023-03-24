@@ -17,23 +17,16 @@ import java.util.List;
 public class Attendee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "attendee_id")
     long attendeeId;
 
     @Transient
     String organizerName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "organizer_id")
-    Organizer organizer;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "event_id")
-    List<Event> event = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    List<Location> location;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    private List<Event> event = new ArrayList<>();
 
     @Column(length = 50)
     String name;

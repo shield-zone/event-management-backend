@@ -11,8 +11,8 @@ import com.shield.eventmanagement.entities.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>{
 	Optional<Event> findByEventId(Long eventId);
-	List<Event> getEventsByNameContainingIgnoreCase(String eventName);
+	List<Event> getEventsByEventNameContainingIgnoreCase(String eventName);
 	List<Event> getEventsByEventTypeContainingIgnoreCase(String eventType);
-	List<Event> getEventsByEventPriceContainingIgnoreCase(Double eventPrice);
+	List<Event> getEventsByEventPrice(Double eventPrice);
 	List<Event> getEventByStartDateContainingIgnoreCase(String startDate);
 }

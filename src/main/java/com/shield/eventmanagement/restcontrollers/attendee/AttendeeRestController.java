@@ -2,13 +2,12 @@ package com.shield.eventmanagement.restcontrollers.attendee;
 
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
-import com.shield.eventmanagement.entities.Location;
-import com.shield.eventmanagement.entities.Organizer;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,20 +50,13 @@ public class AttendeeRestController {
 
     @PostMapping
     public Attendee insertAttendee(@RequestBody AttendeeRequest attendeeReq) {
-        Organizer organizer = new Organizer();
-        organizer.setOrganizerId(attendeeReq.getOrganizerId());
-
-        Event event = new Event();
-        event.setEventId(attendeeReq.getEventId());
-
-        Location location = new Location();
-        location.setLocationId(attendeeReq.getLocationId());
+        Event event = Event.builder()
+                .eventId(attendeeReq.getEventId())
+                .build();
 
         Attendee attendee = Attendee
                 .builder()
-                .event(event)
-                .location(location)
-                .organizer(organizer)
+                .event(Collections.singletonList(event))
                 .name(attendeeReq.getName())
                 .email(attendeeReq.getEmail())
                 .numberOfMember(attendeeReq.getNumberOfMember())

@@ -13,12 +13,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Builder
 public class AttendeeRequest {
-    @NotEmpty(message = "Required organized id")
-    private Long organizerId;
     @NotEmpty(message = "Required event id")
     private Long eventId;
-    @NotEmpty(message = "Required location id")
-    private Long locationId;
     @NotEmpty
     @Size(min=10, max=50, message = "Required email id")
     private String email;

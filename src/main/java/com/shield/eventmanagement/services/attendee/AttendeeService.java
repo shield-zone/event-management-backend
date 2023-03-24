@@ -40,18 +40,7 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> cancelRegistrationByEventName(Attendee attendee) {
-        Optional<Attendee> tempAttendeeOptional = repository
-                .findAttendeeByEmailAndEventId(
-                        attendee.getEmail(),
-                        attendee.getEvent().getEventId()
-                );
-
-        if (!tempAttendeeOptional.isPresent())
-            return Optional.empty();
-
-        Attendee tempAttendee = tempAttendeeOptional.get();
-        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
-            return Optional.empty();
+        if (!doAttendeeExists(attendee)) return Optional.empty();
 
         attendee.setCancelledRegistration(true);
         return Optional.of(repository.saveAndFlush(attendee));
@@ -70,20 +59,25 @@ public class AttendeeService {
     }
 
     public Optional<Attendee> updateAttendee(Attendee attendee) {
+        if (!doAttendeeExists(attendee)) return Optional.empty();
+
+        return Optional.of(repository.saveAndFlush(attendee));
+    }
+
+    private boolean doAttendeeExists(Attendee attendee) {
         Optional<Attendee> tempAttendeeOptional = repository
                 .findAttendeeByEmailAndEventId(
                         attendee.getEmail(),
-                        attendee.getEvent().getEventId()
+                        attendee.getEvent().get(0).getEventId()
                 );
 
         if (!tempAttendeeOptional.isPresent())
-            return Optional.empty();
+            return false;
 
         Attendee tempAttendee = tempAttendeeOptional.get();
 
         if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
-            return Optional.empty();
-
-        return Optional.of(repository.saveAndFlush(attendee));
+            return false;
+        return true;
     }
 }

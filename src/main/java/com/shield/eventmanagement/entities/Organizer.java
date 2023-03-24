@@ -2,13 +2,7 @@ package com.shield.eventmanagement.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -26,6 +20,7 @@ public class Organizer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "organizer_id")
 	private Long organizerId;
 	
 	private String organizerName;
@@ -44,12 +39,6 @@ public class Organizer {
 	
 	private boolean isDeleted;
 	
-//	@OneToOne(cascade= CascadeType.ALL, mappedBy ="organizers")
-//	private List<Location> locations;
-	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy ="organizers")
-	private List<Event> events;
-	
-	@ManyToMany(cascade= CascadeType.ALL, mappedBy ="organizers")
-	private List<Attendee> attendees;	
+	@OneToMany(mappedBy = "organizer")
+	private List<Event> events = new ArrayList<>();
 }

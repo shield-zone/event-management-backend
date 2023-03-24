@@ -28,7 +28,7 @@ public class EventService {
 	
 	
 	public List<Event> getEventsByName(String eventName) {
-		return repository.getEventsByNameContainingIgnoreCase(eventName);
+		return repository.getEventsByEventNameContainingIgnoreCase(eventName);
 	}
 	
 	public List<Event> getEventsByEventType(String eventType) {
@@ -36,7 +36,7 @@ public class EventService {
 	}
 	
 	public List<Event> getEventsByEventPrice(Double eventPrice) {
-		return repository.getEventsByEventPriceContainingIgnoreCase(eventPrice);
+		return repository.getEventsByEventPrice(eventPrice);
 	}
 	
 	public List<Event> getEventByStartDate(String startDate) {

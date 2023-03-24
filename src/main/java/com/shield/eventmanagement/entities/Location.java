@@ -1,21 +1,14 @@
 package com.shield.eventmanagement.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,6 +16,7 @@ public class Location {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "location_id")
 	private Long locationId;
 	
 	private String locationName;
@@ -34,12 +28,7 @@ public class Location {
 	private String state;
 	
 	private String country;
-//	@ManyToMany
-//	@JoinTable(
-//	        name = "location_organizer",
-//	        joinColumns = @JoinColumn(name = "location_id"),
-//	        inverseJoinColumns = @JoinColumn(name = "organizer_id")
-//	    )
-//	private List<Organizer> organizers = new ArrayList<Organizer>();
 
+	@OneToOne()
+	private Event event;
 }

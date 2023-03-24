@@ -80,9 +80,10 @@ public class OrganizerServiceImpl implements OrganizerService {
 			currentOrganizer.setEvents(organizer.getEvents());
 		}
 
-		if (organizer.getLocations() != null && organizer.getLocations().size() > 0) {
-			currentOrganizer.setLocations(organizer.getLocations());
-		}
+		// TODO: FIX THIS
+//		if (organizer.getLocations(:) != null && organizer.getLocations().size() > 0) {
+//			currentOrganizer.setLocations(organizer.getLocations());
+//		}
 
 		// we have updated the required fields now we have to push the data
 		organizer = organizerDao.save(currentOrganizer);

@@ -3,19 +3,15 @@ package com.shield.eventmanagement.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,6 +19,7 @@ public class Event {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "event_id")
 	private Long eventId;
 	
 	private String eventName;
@@ -35,13 +32,15 @@ public class Event {
 	
 	private Double eventPrice;
 	
-	@ManyToMany
-	@JoinTable(
-	        name = "event_organizer",
-	        joinColumns = @JoinColumn(name = "event_id"),
-	        inverseJoinColumns = @JoinColumn(name = "organizer_id")
-	    )
-	private List<Organizer> organizers = new ArrayList<Organizer>();
-	
+	@ManyToMany(mappedBy = "event")
+	private List<Attendee> attendees = new ArrayList<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "location_id", referencedColumnName = "location_id")
+	private Location location;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "organizer_id", referencedColumnName = "organizer_id")
+	private Organizer organizer;
 }
 

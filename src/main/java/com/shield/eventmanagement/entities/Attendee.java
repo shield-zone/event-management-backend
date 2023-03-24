@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,23 +20,16 @@ import javax.persistence.*;
 public class Attendee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "attendee_id")
     long attendeeId;
 
     @Transient
     String organizerName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "organizer_id")
-    Organizer organizer;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "event_id")
-    Event event;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    Location location;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    private List<Event> event = new ArrayList<>();
 
     @Column(length = 50)
     String name;

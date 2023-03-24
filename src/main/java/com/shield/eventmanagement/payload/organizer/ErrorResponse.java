@@ -1,19 +1,19 @@
-package com.shield.eventmanagement.payload;
-
-import java.util.Map;
+package com.shield.eventmanagement.payload.organizer;
 
 import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationsErrorResponse {
+public class ErrorResponse {
 
-	private Map<String, String> errors;
-	private HttpStatus httpStatus;
+	private String message;
 	
+	private HttpStatus status;
 }

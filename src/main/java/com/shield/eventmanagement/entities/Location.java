@@ -28,7 +28,7 @@ public class Location {
 	private String state;
 	
 	private String country;
-	
+
 	@OneToOne()
 	private Event event;
 }

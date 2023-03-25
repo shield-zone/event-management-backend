@@ -15,6 +15,10 @@ import javax.validation.constraints.Size;
 public class AttendeeRequest {
     @NotEmpty(message = "Required event id")
     private Long eventId;
+
+    @NotEmpty(message = "Required user id")
+    private Long user_id;
+
     @NotEmpty
     @Size(min=10, max=50, message = "Required email id")
     private String email;

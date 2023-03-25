@@ -3,6 +3,7 @@ package com.shield.eventmanagement.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.shield.eventmanagement.exceptions.attendee.AttendeeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,5 +72,14 @@ public class GlobalExceptionHandler {
 								 .build();
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
-	
+
+	@ExceptionHandler(AttendeeException.class)
+	public ResponseEntity<?> attendeeRequestException(AttendeeException ex) {
+		ErrorResponse response = ErrorResponse.builder()
+				.message(ex.getMessage())
+				.status(HttpStatus.BAD_REQUEST)
+				.build();
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	}
 }

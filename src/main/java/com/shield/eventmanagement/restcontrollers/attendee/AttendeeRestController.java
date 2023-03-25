@@ -4,10 +4,12 @@ import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
+import com.shield.eventmanagement.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,8 @@ public class AttendeeRestController {
 
     @Autowired
     AttendeeService service;
+    @Autowired
+    EventService eventService;
 
     @GetMapping("find-by-email/{email}")
     public List<Attendee> findByEmail(@PathVariable String email) {
@@ -31,14 +35,13 @@ public class AttendeeRestController {
     }
 
     @PostMapping
-    public Attendee insertAttendee(@NotNull @RequestBody AttendeeRequest attendeeReq) {
-        Event event = Event.builder()
-                .eventId(attendeeReq.getEventId())
-                .build();
+    public Attendee insertAttendee(@Valid @RequestBody AttendeeRequest attendeeReq) {
+        Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
+        if (!event.isPresent()) return null;
 
         Attendee attendee = Attendee
                 .builder()
-                .event(Collections.singletonList(event))
+                .event(Collections.singletonList(event.get()))
                 .user_id(attendeeReq.getUser_id())
                 .name(attendeeReq.getName())
                 .email(attendeeReq.getEmail())

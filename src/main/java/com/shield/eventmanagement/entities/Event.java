@@ -36,6 +36,7 @@ public class Event {
 	private Double eventPrice;
 	
 	@ManyToMany(mappedBy = "event")
+	@JsonBackReference
 	private List<Attendee> attendees = new ArrayList<>();
 
 	@OneToOne(cascade = CascadeType.ALL)

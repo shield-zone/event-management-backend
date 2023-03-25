@@ -1,5 +1,6 @@
 package com.shield.eventmanagement.services.event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,10 @@ public class EventService {
 	}
 	
 	public List<Attendee> getAttendeeByEventId(Long eventId) {
-		return repository.getAttendeeByEventId(eventId);
+		List<Attendee> attendees = new ArrayList<Attendee>();
+		Event event = findByEventId(eventId).get();
+		attendees.addAll(event.getAttendees());
+		return attendees;
 	}
 
 }

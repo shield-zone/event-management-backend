@@ -4,9 +4,13 @@ import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
+import com.shield.eventmanagement.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,8 @@ public class AttendeeRestController {
 
     @Autowired
     AttendeeService service;
+    @Autowired
+    EventService eventService;
 
     @GetMapping("find-by-email/{email}")
     public List<Attendee> findByEmail(@PathVariable String email) {
@@ -25,38 +31,18 @@ public class AttendeeRestController {
 
     @GetMapping("find-by-name/{name}")
     public List<Attendee> getAttendeesByName(@PathVariable String name) {
-        return service.getAttendeesByName(name);
-    }
-
-    @GetMapping("get-attendees-by-location/{location}")
-    public List<Attendee> getAttendeesByLocation(@PathVariable String location) {
-        return service.getAttendeesByLocation(location);
-    }
-
-    @GetMapping("get-event-attendees/{eventName}")
-    public List<Attendee> getAttendeesByEventName(@PathVariable String eventName) {
-        return service.getAttendeesByEventName(eventName);
-    }
-
-    @PutMapping("cancel-event-registration")
-    public Optional<Attendee> cancelRegistrationByEventName(@RequestBody Attendee attendee) {
-        return service.cancelRegistrationByEventName(attendee);
-    }
-
-    @GetMapping("get-cancelled-attendees-by-event/{eventName}")
-    public List<Attendee> getCancelledAttendeesByEventName(@PathVariable String eventName) {
-        return service.getCancelledAttendeesByEventName(eventName);
+        return service.findByName(name);
     }
 
     @PostMapping
-    public Attendee insertAttendee(@RequestBody AttendeeRequest attendeeReq) {
-        Event event = Event.builder()
-                .eventId(attendeeReq.getEventId())
-                .build();
+    public Attendee insertAttendee(@Valid @RequestBody AttendeeRequest attendeeReq) {
+        Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
+        if (!event.isPresent()) return null;
 
         Attendee attendee = Attendee
                 .builder()
-                .event(Collections.singletonList(event))
+                .event(Collections.singletonList(event.get()))
+                .user_id(attendeeReq.getUser_id())
                 .name(attendeeReq.getName())
                 .email(attendeeReq.getEmail())
                 .numberOfMember(attendeeReq.getNumberOfMember())
@@ -67,7 +53,12 @@ public class AttendeeRestController {
     }
 
     @PutMapping
-    public Optional<Attendee> updateAttendee(@RequestBody Attendee attendee) {
-        return service.updateAttendee(attendee);
+    public ResponseEntity<Attendee> updateAttendee(@RequestBody Attendee attendee) {
+        Optional<Attendee> optionalAttendee = service.updateAttendee(attendee);
+        return optionalAttendee.map(
+                value -> ResponseEntity.status(200).body(value)
+        ).orElseGet(
+                () -> ResponseEntity.status(404).body(null)
+        );
     }
 }

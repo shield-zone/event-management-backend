@@ -1,5 +1,7 @@
 package com.shield.eventmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.shield.eventmanagement.entities.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,11 +26,11 @@ public class Attendee {
     @Column(name = "attendee_id")
     long attendeeId;
 
-    @Transient
-    String organizerName;
+    private Long user_id;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    @JsonManagedReference
     private List<Event> event = new ArrayList<>();
 
     @Column(length = 50)

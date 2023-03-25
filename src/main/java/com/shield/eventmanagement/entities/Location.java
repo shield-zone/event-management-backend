@@ -39,10 +39,6 @@ public class Location {
 	private String country;
 
 	
-	@ManyToOne
-	private Organizer organizer = new Organizer();
-	
-
 	@OneToOne(mappedBy = "location")
 	@JsonBackReference
 	private Event event;

@@ -15,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.shield.eventmanagement.security.filter.JwtFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -25,6 +27,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	JwtFilter jwtFilter;
+
+	public static final String[] PUBLIC_URLS = new String[] {
+			"/api/v1/secure/login",
+			"/api/v1/users/register",
+			"/v3/api-docs",
+			"/v2/api-docs",
+			"/swagger-resources/**",
+			"/swagger-ui/**",
+			"/webjars/**"
+	};
 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
@@ -34,8 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.csrf()
 		.disable()
 		.authorizeRequests()
-		.antMatchers("/api/v1/secure/login", "/api/v1/users/register")
-		.permitAll()
+		.antMatchers(PUBLIC_URLS).permitAll()
 		.anyRequest()
 		.authenticated()
 		.and()

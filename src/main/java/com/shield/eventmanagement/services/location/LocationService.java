@@ -24,22 +24,22 @@ public class LocationService {
 	}
 	
 	public Optional<Location> getLocationByName(String locationName) {
-		return repository.getLocationByNameContainingIgnoreCase(locationName);
+		return repository.getLocationByLocationNameContainingIgnoreCase(locationName);
 	}
 	
 	public Optional<Location> getAddress(String address) {
-		return repository.getAddressContainingIgnoreCase(address);
+		return repository.getLocationsByAddressContainingIgnoreCase(address);
 	}
 	
 	public Optional<Location> getPincode(String pincode) {
-		return repository.getPincodeContainingIgnoreCase(pincode);
+		return repository.getLocationsByPincodeContainingIgnoreCase(pincode);
 	}
 	
 	public Optional<Location> getState(String state) {
-		return repository.getStateContainingIgnoreCase(state);
+		return repository.getLocationsByStateContainingIgnoreCase(state);
 	}
 	
-	public Optional<Location> getCountry(String coutry) {
-		return repository.getCountryContainingIgnoreCase(coutry);
+	public Optional<Location> getCountry(String country) {
+		return repository.getLocationByCountry(country);
 	}
 }

@@ -1,5 +1,7 @@
 package com.shield.eventmanagement.dao.organizer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +22,6 @@ public class OrganizerDaoImpl implements OrganizerDao{
 		return organizer;
 	}
 
-	
-
 	@Override
 	public String delete(Long organizerId) {
 	
@@ -41,6 +41,35 @@ public class OrganizerDaoImpl implements OrganizerDao{
 	    }
 	    
 		return organizer;
+	}
+
+	@Override
+	public Organizer fetchByUsername(String username) {
+		
+		Organizer organizer = organizerRepository.findByEmailId(username);
+		return organizer;
+	}
+
+	@Override
+	public Organizer fetchByWebsite(String website) {
+		
+		Organizer organizer = organizerRepository.findByWebsite(website);
+		return organizer;
+	}
+
+	@Override
+	public List<Organizer> fetchByRating(String rating) {
+		
+		List<Organizer> organizerList = organizerRepository.findByRating(rating);
+		return organizerList;
+	}
+
+	@Override
+	public List<Organizer> fetchAll() {
+		
+		List<Organizer> organizerLists = organizerRepository.findAll(); 
+		
+	    return organizerLists;
 	}
 
 }

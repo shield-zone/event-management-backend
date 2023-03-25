@@ -20,38 +20,11 @@ public class AttendeeService {
     AttendeeRepository repository;
 
     public List<Attendee> findByEmail(String email) {
-        return repository.findByEmail(email);
+        return repository.findByEmailContainingIgnoreCase(email);
     }
 
-    public List<Attendee> findByEmailAndEventName(String email, String eventName) {
-        return repository.findAttendeeByEmailAndEventName(email, eventName);
-    }
-
-    public List<Attendee> getAttendeesByName(String name) {
-        return repository.getAttendeesByNameContainingIgnoreCase(name);
-    }
-
-    public List<Attendee> getAttendeesByLocation(String location) {
-        return repository.getAttendeesByLocationContainingIgnoreCase(location);
-    }
-
-    public List<Attendee> getAttendeesByEventName(String eventName) {
-        return repository.getAttendeesByEventNameContainingIgnoreCase(eventName);
-    }
-
-    public Optional<Attendee> cancelRegistrationByEventName(Attendee attendee) {
-        if (!doAttendeeExists(attendee)) return Optional.empty();
-
-        attendee.setCancelledRegistration(true);
-        return Optional.of(repository.saveAndFlush(attendee));
-    }
-
-    public List<Attendee> getCancelledAttendeesByEventName(String eventName) {
-        return repository
-                .getCancelledAttendeesByEventNameContainingIgnoreCase(eventName)
-                .stream()
-                .filter(Attendee::isCancelledRegistration)
-                .collect(Collectors.toList());
+    public List<Attendee> findByName(String name) {
+        return repository.findAttendeeByNameContainingIgnoreCase(name);
     }
 
     public Attendee insertAttendee(Attendee attendee) {
@@ -66,7 +39,7 @@ public class AttendeeService {
 
     private boolean doAttendeeExists(Attendee attendee) {
         Optional<Attendee> tempAttendeeOptional = repository
-                .findAttendeeByEmailAndEventId(
+                .findAttendeeByEmailAndAttendeeId(
                         attendee.getEmail(),
                         attendee.getEvent().get(0).getEventId()
                 );
@@ -76,8 +49,6 @@ public class AttendeeService {
 
         Attendee tempAttendee = tempAttendeeOptional.get();
 
-        if (tempAttendee.getAttendeeId() != attendee.getAttendeeId())
-            return false;
-        return true;
+        return tempAttendee.getAttendeeId() == attendee.getAttendeeId();
     }
 }

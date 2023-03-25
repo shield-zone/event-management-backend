@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/attendee")
@@ -39,9 +37,11 @@ public class AttendeeRestController {
         Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
         if (!event.isPresent()) return null;
 
+        System.out.println("----------------> " + event.get().getEventId());
+
         Attendee attendee = Attendee
                 .builder()
-                .event(Collections.singletonList(event.get()))
+                .event(new ArrayList<>(Arrays.asList(event.get())))
                 .user_id(attendeeReq.getUser_id())
                 .name(attendeeReq.getName())
                 .email(attendeeReq.getEmail())

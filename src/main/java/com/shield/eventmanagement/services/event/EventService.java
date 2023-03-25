@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shield.eventmanagement.repositories.event.EventRepository;
-
+import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 
 
@@ -41,6 +41,10 @@ public class EventService {
 	
 	public List<Event> getEventByStartDate(String startDate) {
 		return repository.getEventByStartDateContainingIgnoreCase(startDate);
+	}
+	
+	public List<Attendee> getAttendeeByEventId(Long eventId) {
+		return repository.getAttendeeByEventId(eventId);
 	}
 
 }

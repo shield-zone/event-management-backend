@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.services.event.EventService;
 
@@ -42,5 +43,10 @@ public class EventRestController {
 	@GetMapping("find-by-event-start-date/{startDate}")
 	List<Event> getEventsByStartDate(@PathVariable String startDate) {
 		return service.getEventByStartDate(startDate);
+	}
+	
+	@GetMapping("find-attendee-by-event-id/{eventId}")
+	List<Attendee> getAttendeeByEventId(@PathVariable Long eventId) {
+		return service.getAttendeeByEventId(eventId);
 	}
 }

@@ -1,14 +1,15 @@
 package com.shield.eventmanagement.entities;
 
-<<<<<<< HEAD
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-=======
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
->>>>>>> dev
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,14 +37,13 @@ public class Location {
 	private String state;
 	
 	private String country;
-<<<<<<< HEAD
+
 	
 	@ManyToOne
 	private Organizer organizer = new Organizer();
 	
-=======
->>>>>>> dev
 
-	@OneToOne()
+	@OneToOne(mappedBy = "location")
+	@JsonBackReference
 	private Event event;
 }

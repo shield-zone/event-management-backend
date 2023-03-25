@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,10 +40,12 @@ public class Event {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "location_id", referencedColumnName = "location_id")
+	@JsonManagedReference
 	private Location location;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "organizer_id", referencedColumnName = "organizer_id")
+	@JsonBackReference
 	private Organizer organizer;
 }
 

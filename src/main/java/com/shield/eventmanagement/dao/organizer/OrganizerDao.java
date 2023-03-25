@@ -17,8 +17,6 @@ public interface OrganizerDao {
 	Organizer fetchByWebsite(String website);
 	
 	List<Organizer> fetchByRating(String rating);
-
-	List<Organizer> fetchByIsDeleted(boolean isDeleted);	
 	
 	List<Organizer> fetchAll();
 }

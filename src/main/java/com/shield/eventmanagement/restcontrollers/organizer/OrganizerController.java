@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.Organizer;
+import com.shield.eventmanagement.exceptions.InvalidException;
 import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundException;
+import com.shield.eventmanagement.exceptions.user.UserNotFoundException;
 import com.shield.eventmanagement.request.organizer.OrganizerRequest;
+import com.shield.eventmanagement.request.organizer.OrganizerUpdateRequest;
 import com.shield.eventmanagement.services.organizer.OrganizerService;
 
 @RestController
@@ -27,33 +31,33 @@ public class OrganizerController {
 	private OrganizerService organizerService;
 
 	@PostMapping("/create-organizer")
-	public ResponseEntity<?> createOrganizer(@Valid @RequestBody OrganizerRequest organizerRequest) {
+	public ResponseEntity<?> createOrganizer(@Valid @RequestBody OrganizerRequest organizerRequest) throws InvalidException, UserNotFoundException {
 
-		return new ResponseEntity<>(organizerRequest, HttpStatus.OK);
+		Organizer organizer = organizerService.create(organizerRequest);
+		return new ResponseEntity<>(organizer, HttpStatus.OK);
+	}
+	
+	@PostMapping("/update-organizer")
+	public ResponseEntity<?> updateOrganizer(@Valid @RequestBody OrganizerUpdateRequest organizerUpdateRequest)
+	{
+		Organizer organizer = organizerService.update(organizerUpdateRequest);
+		
+		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
 
 	@GetMapping("/fetch-by-id")
-	public ResponseEntity<?> fetchById(@RequestBody Organizer requestOrganizer) {
+	public ResponseEntity<?> fetchById(@RequestBody Organizer requestOrganizer) throws OrganizerNotFoundException {
 		Organizer organizer = null;
-		try {
-			organizer = organizerService.fetchById(requestOrganizer.getOrganizerId());
-		} catch (OrganizerNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		organizer = organizerService.fetchById(requestOrganizer.getOrganizerId());
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
 
 	@GetMapping("/fetch-by-username")
-	public ResponseEntity<?> fetchByUsername(@RequestParam("username") String username) {
+	public ResponseEntity<?> fetchByUsername(@RequestParam("username") String username) throws OrganizerNotFoundException {
 		Organizer organizer = null;
-		try {
-			organizer = organizerService.fetchByUsername(username);
-		} catch (OrganizerNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		organizer = organizerService.fetchByUsername(username);
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
@@ -66,14 +70,9 @@ public class OrganizerController {
 	}
 
 	@GetMapping("/fetch-by-website")
-	public ResponseEntity<?> fetchByWebsite(@RequestParam("website") String website) {
+	public ResponseEntity<?> fetchByWebsite(@RequestParam("website") String website) throws OrganizerNotFoundException {
 		Organizer organizer = null;
-		try {
-			organizer = organizerService.fetchByWebsite(website);
-		} catch (OrganizerNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		organizer = organizerService.fetchByWebsite(website);
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
@@ -86,20 +85,19 @@ public class OrganizerController {
 
 	}
 
-	@GetMapping("/fetch-by-isDeleted")
-	public ResponseEntity<?> fetchByIsDeleted(@RequestParam("isDeleted") boolean isDeleted) {
-
-		List<Organizer> organizerList = organizerService.fetchByIsDeleted(isDeleted);
-
-		return new ResponseEntity<>(organizerList, HttpStatus.OK);
-	}
-
 	@GetMapping("/fetch-all")
 	public ResponseEntity<?> fetchAll() {
 
 		List<Organizer> organizerList = organizerService.fetchAll();
 
 		return new ResponseEntity<>(organizerList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/fetch-all-events")
+	public ResponseEntity<?> fetchAllEvents(){
+		List<Event> eventList = organizerService.fetchAllEvent();
+		
+		return new ResponseEntity<>(eventList, HttpStatus.OK);
 	}
 
 }

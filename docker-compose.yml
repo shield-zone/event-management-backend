@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mysql:
+    image: 'mysql:latest'
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=events
+      - MYSQL_ROOT_PASSWORD=12345
+    ports:
+      - '3306:3306'
+
+  server:
+    image: 'openjdk:8-jdk'
+    restart: unless-stopped
+    command: ["/running-script.sh"]
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./target/event-management-backend.jar:/event-management-backend.jar
+      - ./running-script.sh:/running-script.sh
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/events
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=12345
+    depends_on:
+      - mysql
+
+networks:
+  default:
+    name: event_manager_backend_network

@@ -15,11 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.shield.eventmanagement.security.filter.JwtFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -28,33 +27,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JwtFilter jwtFilter;
 
-	public static final String[] PUBLIC_URLS = new String[] {
-			"/api/v1/secure/login",
-			"/api/v1/users/register",
-			"/v3/api-docs",
-			"/v2/api-docs",
-			"/swagger-resources/**",
-			"/swagger-ui/**",
-			"/webjars/**"
-	};
-
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
 
 	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.cors()
+			.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+
 		http.csrf()
-		.disable()
-		.authorizeRequests()
-		.antMatchers(PUBLIC_URLS).permitAll()
-		.anyRequest()
-		.authenticated()
-		.and()
-		.exceptionHandling()
-		.and()
-		.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
+			.disable()
+			.authorizeRequests()
+			.antMatchers("/api/v1/secure/login", "/api/v1/users/register")
+			.permitAll()
+			.anyRequest()
+			.authenticated()
+			.and()
+			.exceptionHandling()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+		http
+			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
 	}
 
 	@Bean

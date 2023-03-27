@@ -2,13 +2,10 @@ package com.shield.eventmanagement.repositories.attendee;
 
 import com.shield.eventmanagement.entities.Attendee;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
 //    String findAttendeeByEmailAndEventIdQuery = "SELECT a.* from attendee a, event e where a.event_id = e.event_id AND e.event_id=:eventId AND a.email=:email";
 //    String findAttendeeByEmailAndEventNameQuery = "SELECT a.* FROM attendee a, event e where a.event_id = e.event_id AND e.event_name=:eventName AND a.email=:email";

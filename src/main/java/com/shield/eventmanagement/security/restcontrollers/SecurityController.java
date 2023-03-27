@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shield.eventmanagement.entities.user.User;
 import com.shield.eventmanagement.exceptions.InvalidException;
+import com.shield.eventmanagement.repositories.user.UserRepository;
 import com.shield.eventmanagement.security.Dto.AuthenticationRequest;
 import com.shield.eventmanagement.security.Dto.AuthenticationResponse;
-import com.shield.eventmanagement.security.services.CustomUserDetailsService;
 import com.shield.eventmanagement.security.util.JwtUtil;
 
 @RestController
@@ -29,6 +30,8 @@ public class SecurityController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> generateToken(@Valid @RequestBody AuthenticationRequest request) throws InvalidException
@@ -45,7 +48,10 @@ public class SecurityController {
 		
 		String token = jwtUtil.generateToken(request.getUserName());
 		
+		User user = userRepository.findByUserName(request.getUserName());
+		
 		AuthenticationResponse response = AuthenticationResponse.builder()
+										 .user(user)
 										 .token(token)
 										 .status(HttpStatus.OK)
 										 .build();

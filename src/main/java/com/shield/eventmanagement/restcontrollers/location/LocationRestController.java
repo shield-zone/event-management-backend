@@ -3,8 +3,12 @@ package com.shield.eventmanagement.restcontrollers.location;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +21,14 @@ public class LocationRestController {
 	
 	@Autowired
 	LocationService service;
+	
+	@PostMapping("/create-location")
+	public ResponseEntity<?> createLocation(@RequestBody Location location)
+	{
+		location = service.create(location);
+		
+		return new ResponseEntity<>(location, HttpStatus.OK);
+	}
 	
 	@GetMapping("find-by-location-id/{locationId}")
 	Optional<Location> findByLocationId(@PathVariable Long locationId) {

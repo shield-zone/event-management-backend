@@ -54,7 +54,7 @@ public class OrganizerServiceImpl implements OrganizerService {
 		organizer.setDeleted(false);
 		organizer.setRating(organizerRequest.getRating());
 		organizer.setPresentSince(organizerRequest.getPresentSince());
-		organizer.setWebsite(organizerRequest.getPresentSince());
+		organizer.setWebsite(organizerRequest.getWebsite());
 		organizer.setEvents(organizerRequest.getEvents());
 		
 		

@@ -34,6 +34,6 @@ public class OrganizerRequest {
 	
 	private String website;
 	
-	@NotEmpty(message="Should have some given events")
-	private List<Event> events;
+	@NotNull(message="Should have some given events")
+	private Long eventId;
 }

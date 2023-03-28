@@ -1,7 +1,9 @@
 package com.shield.eventmanagement.services.organizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ public class OrganizerServiceImpl implements OrganizerService {
 
 	@Override
 	public Organizer create(OrganizerRequest organizerRequest) throws InvalidException, UserNotFoundException {
+
+		Optional<Event> event = eventRepository.findByEventId(organizerRequest.getEventId());
 		
 		
 		User user = userRepository.findById(organizerRequest.getId()).get();
@@ -55,7 +59,7 @@ public class OrganizerServiceImpl implements OrganizerService {
 		organizer.setRating(organizerRequest.getRating());
 		organizer.setPresentSince(organizerRequest.getPresentSince());
 		organizer.setWebsite(organizerRequest.getPresentSince());
-		organizer.setEvents(organizerRequest.getEvents());
+		organizer.setEvents(Collections.singletonList(event.get()));
 		
 		
 		if(!isValid(organizer))

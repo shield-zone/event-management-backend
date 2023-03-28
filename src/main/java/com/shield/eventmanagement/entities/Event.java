@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.*;
@@ -34,7 +33,7 @@ public class Event {
 	private Double eventPrice;
 	
 	@ManyToMany(mappedBy = "event")
-	@JsonBackReference
+	@JsonManagedReference
 	private List<Attendee> attendees = new ArrayList<>();
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -44,7 +43,7 @@ public class Event {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "organizer_id", referencedColumnName = "organizer_id")
-	@JsonBackReference
+	@JsonManagedReference
 	private Organizer organizer;
 }
 

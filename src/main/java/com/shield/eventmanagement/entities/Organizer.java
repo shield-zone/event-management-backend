@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 public class Organizer {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "organizer_id")
 	private Long organizerId;
 	
@@ -43,7 +44,7 @@ public class Organizer {
 	private String website;
 	
 	@OneToMany(cascade = CascadeType.ALL ,mappedBy = "organizer")
-	@JsonManagedReference
+	@JsonBackReference
 	private List<Event> events;
 	
 	public void setEvents(List<Event> events)

@@ -2,6 +2,7 @@ package com.shield.eventmanagement.restcontrollers.location;
 
 import java.util.Optional;
 
+import com.shield.eventmanagement.request.location.LocationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,16 @@ public class LocationRestController {
 	LocationService service;
 	
 	@PostMapping("/create-location")
-	public ResponseEntity<?> createLocation(@RequestBody Location location)
+	public ResponseEntity<?> createLocation(@RequestBody LocationRequest locationReq)
 	{
+		Location location = Location.builder()
+				.address(locationReq.getAddress())
+				.country(locationReq.getCountry())
+				.locationName(locationReq.getLocationName())
+				.pincode(locationReq.getPincode())
+				.state(locationReq.getState())
+				.build();
+
 		location = service.create(location);
 		
 		return new ResponseEntity<>(location, HttpStatus.OK);

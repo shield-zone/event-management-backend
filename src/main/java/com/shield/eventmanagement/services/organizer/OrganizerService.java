@@ -1,6 +1,7 @@
 package com.shield.eventmanagement.services.organizer;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.Organizer;
@@ -18,7 +19,7 @@ public interface OrganizerService {
 	
 	String delete(Long organizerId) throws OrganizerNotFoundException;
 	
-	Organizer fetchById(Long organizerId) throws OrganizerNotFoundException;
+	Optional<Organizer> fetchById(Long organizerId) throws OrganizerNotFoundException;
 	
     Organizer fetchByUsername(String username) throws OrganizerNotFoundException;
 	

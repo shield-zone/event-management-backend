@@ -1,6 +1,7 @@
 package com.shield.eventmanagement.dao.organizer;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,46 +31,33 @@ public class OrganizerDaoImpl implements OrganizerDao{
 	}
 
 	@Override
-	public Organizer fetchById(Long organizerId) {
-		
-	    Organizer organizer = organizerRepository.findById(organizerId).get();
-	    
-	    if(organizer==null)
-	    {
-	    	System.out.println("exception throw karna he");
-	    	return null;
-	    }
-	    
-		return organizer;
+	public Optional<Organizer> fetchById(Long organizerId) {
+
+		return organizerRepository.findById(organizerId);
 	}
 
 	@Override
 	public Organizer fetchByUsername(String username) {
-		
-		Organizer organizer = organizerRepository.findByEmailId(username);
-		return organizer;
+
+		return organizerRepository.findByEmailId(username);
 	}
 
 	@Override
 	public Organizer fetchByWebsite(String website) {
-		
-		Organizer organizer = organizerRepository.findByWebsite(website);
-		return organizer;
+
+		return organizerRepository.findByWebsite(website);
 	}
 
 	@Override
 	public List<Organizer> fetchByRating(String rating) {
-		
-		List<Organizer> organizerList = organizerRepository.findByRating(rating);
-		return organizerList;
+
+		return organizerRepository.findByRating(rating);
 	}
 
 	@Override
 	public List<Organizer> fetchAll() {
-		
-		List<Organizer> organizerLists = organizerRepository.findAll(); 
-		
-	    return organizerLists;
+
+		return organizerRepository.findAll();
 	}
 
 }

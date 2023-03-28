@@ -2,6 +2,7 @@ package com.shield.eventmanagement.services.organizer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +38,15 @@ public class OrganizerServiceImpl implements OrganizerService {
 
 	@Override
 	public Organizer create(OrganizerRequest organizerRequest) throws InvalidException, UserNotFoundException {
+
+//		Optional<Event> event = eventRepository.findByEventId(organizerRequest.getEventId());
 		
 		
-		User user = userRepository.findById(organizerRequest.getId()).get();
-		if(user==null)
-		{
+		Optional<User> userOptional = userRepository.findById(organizerRequest.getId());
+		if(!userOptional.isPresent()) {
 			throw new UserNotFoundException("User with giver user Id not found");
 		}
+		User user = userOptional.get();
 		
 		Organizer organizer = new Organizer();
 		
@@ -54,8 +57,8 @@ public class OrganizerServiceImpl implements OrganizerService {
 		organizer.setDeleted(false);
 		organizer.setRating(organizerRequest.getRating());
 		organizer.setPresentSince(organizerRequest.getPresentSince());
-		organizer.setWebsite(organizerRequest.getWebsite());
-		organizer.setEvents(organizerRequest.getEvents());
+		organizer.setWebsite(organizerRequest.getPresentSince());
+//		organizer.setEvents(Collections.singletonList(event.get()));
 		
 		
 		if(!isValid(organizer))
@@ -74,11 +77,8 @@ public class OrganizerServiceImpl implements OrganizerService {
 		{
 			String regexPattern = "^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[6789]\\d{9}$";
 			String phoneNumber = organizer.getPhoneNumber();
-			
-			if(!phoneNumber.matches(regexPattern))
-			{
-				return false;
-			}
+
+			return phoneNumber.matches(regexPattern);
 		}
 		return true;
 	}
@@ -210,24 +210,20 @@ public class OrganizerServiceImpl implements OrganizerService {
 	@Override
 	public String delete(Long organizerId) throws OrganizerNotFoundException {
 		
-		Organizer organizer = organizerDao.fetchById(organizerId);
-		if(organizer==null)
-		{
+		Optional<Organizer> organizerOptional = organizerDao.fetchById(organizerId);
+		if(!organizerOptional.isPresent()) {
 			throw new OrganizerNotFoundException("Organizer with the given Id is not found on Backend");
 		}
+		Organizer organizer = organizerOptional.get();
+
 		organizer.setDeleted(true);
-	    organizer = organizerDao.save(organizer);
+	    organizerDao.save(organizer);
 		return "Organizer Deleted Successfully";
 	}
 
 	@Override
-	public Organizer fetchById(Long organizerId) throws OrganizerNotFoundException {
-		Organizer organizer = organizerDao.fetchById(organizerId);
-		if(organizer==null)
-		{
-			throw new OrganizerNotFoundException();
-		}
-		return organizer;
+	public Optional<Organizer> fetchById(Long organizerId) throws OrganizerNotFoundException {
+		return organizerDao.fetchById(organizerId);
 	}
 
 	@Override

@@ -1,14 +1,12 @@
 package com.shield.eventmanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +25,7 @@ public class Attendee {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id", referencedColumnName = "event_id")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Event> event = new ArrayList<>();
 
     @Column(length = 50)

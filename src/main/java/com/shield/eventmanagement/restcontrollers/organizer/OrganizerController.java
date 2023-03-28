@@ -1,18 +1,14 @@
 package com.shield.eventmanagement.restcontrollers.organizer;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.Organizer;
@@ -45,19 +41,17 @@ public class OrganizerController {
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
 
-	@GetMapping("/fetch-by-id")
-	public ResponseEntity<?> fetchById(@RequestBody Organizer requestOrganizer) throws OrganizerNotFoundException {
-		Organizer organizer = null;
-		
-		organizer = organizerService.fetchById(requestOrganizer.getOrganizerId());
+	@GetMapping("/fetch-by-id/{id}")
+	public ResponseEntity<?> fetchById(@PathVariable Long id) throws OrganizerNotFoundException {
+
+		Optional<Organizer> organizer = organizerService.fetchById(id);
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
 
 	@GetMapping("/fetch-by-username")
 	public ResponseEntity<?> fetchByUsername(@RequestParam("username") String username) throws OrganizerNotFoundException {
-		Organizer organizer = null;
-		organizer = organizerService.fetchByUsername(username);
+		Organizer organizer = organizerService.fetchByUsername(username);
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
@@ -71,8 +65,7 @@ public class OrganizerController {
 
 	@GetMapping("/fetch-by-website")
 	public ResponseEntity<?> fetchByWebsite(@RequestParam("website") String website) throws OrganizerNotFoundException {
-		Organizer organizer = null;
-		organizer = organizerService.fetchByWebsite(website);
+		Organizer organizer = organizerService.fetchByWebsite(website);
 
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}

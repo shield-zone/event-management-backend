@@ -19,6 +19,13 @@ public class LocationService {
 	@Autowired
 	LocationRepository repository;
 	
+	public Location create(Location location)
+	{
+		location = repository.save(location);
+		
+		return location;
+	}
+	
 	public Optional<Location> findByLocationId(Long locationId) {
 		return repository.findByLocationId(locationId);
 	}

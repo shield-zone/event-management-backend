@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +23,14 @@ public class EventRestController {
 	
 	@Autowired
 	EventService service;
+	
+	@PostMapping("/create-user")
+	public ResponseEntity<?> create(@RequestBody Event event)
+	{
+		event = service.create(event);
+		
+		return new ResponseEntity<>(event, HttpStatus.OK);
+	}
 	
 	@GetMapping("find-by-event-id/{eventId}")
 	Optional<Event> findByEventId(@PathVariable Long eventId) {

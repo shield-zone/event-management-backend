@@ -7,10 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shield.eventmanagement.repositories.event.EventRepository;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
-
+import com.shield.eventmanagement.entities.Location;
+import com.shield.eventmanagement.repositories.event.EventRepository;
+import com.shield.eventmanagement.services.location.LocationService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,13 @@ public class EventService {
 	
 	@Autowired
 	EventRepository repository;
+
+	
+	public Event create(Event event)
+	{
+		event = repository.save(event);
+		return event;
+	}
 	
 	public Optional<Event> findByEventId(Long eventId) {
 		return repository.findByEventId(eventId);

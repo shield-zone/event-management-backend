@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 
-@Repository
 public interface EventRepository extends JpaRepository<Event, Long>{
 	Optional<Event> findByEventId(Long eventId);
 	List<Event> getEventsByEventNameContainingIgnoreCase(String eventName);

@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 	public User update(User userUpdateRequest) throws UserNotFoundException {
 		Optional<User> userOptional = userDao.findById(userUpdateRequest.getUserId());
 
-		if (userOptional.isEmpty()) {
+		if (!userOptional.isPresent()) {
 			throw new UserNotFoundException("User with given Id not found");
 		}
 		User user = userOptional.get();
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	public Optional<User> fetchById(Long userId) throws UserNotFoundException {
 		Optional<User> user = userDao.findById(userId);
 
-		if (user.isEmpty()) {
+		if (!user.isPresent()) {
 			throw new UserNotFoundException("User with the given Id not found");
 		}
 		return user;

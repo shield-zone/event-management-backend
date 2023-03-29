@@ -97,7 +97,7 @@ public class OrganizerServiceImpl implements OrganizerService {
 
 		Optional<Organizer> organizer = organizerDao.fetchById(organizerId);
 
-		if (organizer.isEmpty()) {
+		if (!organizer.isPresent()) {
 			throw new OrganizerNotFoundException("Organizer with requested Id not found!!");
 		}
 		return organizer;
@@ -141,7 +141,7 @@ public class OrganizerServiceImpl implements OrganizerService {
 		
 		Optional<Organizer> organizerOptional = fetchById(organizerUpdateRequest.getOrganizerId()); 
 		
-		if(organizerOptional.isEmpty())
+		if(!organizerOptional.isPresent())
 		{
 			throw new OrganizerNotFoundException("Organizer with given details not found");
 		}

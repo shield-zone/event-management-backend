@@ -147,8 +147,13 @@ public class EventRestController {
 		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 	
-	@GetMapping("find-attendee-by-event-id/{eventId}")
+	@GetMapping("get-attendees-by-event-id/{eventId}")
 	List<Attendee> getAttendeeByEventId(@PathVariable Long eventId) {
 		return service.getAttendeeByEventId(eventId);
+	}
+
+	@GetMapping("get-events-by-attendee-id/{id}")
+	public List<Event> getEventsByAttendeeId(@PathVariable Long id) {
+		return service.getEventsByAttendeeId(id);
 	}
 }

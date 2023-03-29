@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shield.eventmanagement.entities.Location;
+import com.shield.eventmanagement.exceptions.location.LocationNotFoundException;
 import com.shield.eventmanagement.request.location.LocationRequest;
 import com.shield.eventmanagement.request.location.LocationUpdateRequest;
 import com.shield.eventmanagement.services.location.LocationService;
@@ -37,14 +38,14 @@ public class LocationRestController {
 	}
 
 	@PutMapping("/update-location")
-	public ResponseEntity<?> updateLocation(@RequestBody LocationUpdateRequest locationUpdateRequest) {
+	public ResponseEntity<?> updateLocation(@RequestBody LocationUpdateRequest locationUpdateRequest) throws LocationNotFoundException {
 		Location location = service.update(locationUpdateRequest);
 
 		return new ResponseEntity<>(location, HttpStatus.OK);
 	}
 
 	@GetMapping("find-by-location-id/{locationId}")
-	public ResponseEntity<?> findByLocationId(@PathVariable Long locationId) {
+	public ResponseEntity<?> findByLocationId(@PathVariable Long locationId) throws LocationNotFoundException {
 
 		Location location = service.findByLocationId(locationId).get();
 		return new ResponseEntity<>(location, HttpStatus.OK);

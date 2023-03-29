@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shield.eventmanagement.entities.Location;
+import com.shield.eventmanagement.exceptions.location.LocationNotFoundException;
 import com.shield.eventmanagement.repositories.location.LocationRepository;
 import com.shield.eventmanagement.request.location.LocationUpdateRequest;
 
@@ -24,7 +25,7 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public Location update(LocationUpdateRequest locationUpdateRequest) {
+	public Location update(LocationUpdateRequest locationUpdateRequest) throws LocationNotFoundException {
 		Optional<Location> locationOptional = findByLocationId(locationUpdateRequest.getLocationId());
 		Location location = locationOptional.get();
 
@@ -54,8 +55,15 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public Optional<Location> findByLocationId(Long locationId) {
-		return repository.findById(locationId);
+	public Optional<Location> findByLocationId(Long locationId) throws LocationNotFoundException {
+		
+		Optional<Location> locationOptional =  repository.findById(locationId);
+		
+		if(!locationOptional.isPresent())
+		{
+			throw new LocationNotFoundException("Location with requested Id not found");
+		}
+		return locationOptional;
 	}
 
 	@Override

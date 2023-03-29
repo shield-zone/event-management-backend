@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +21,13 @@ import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.Location;
 import com.shield.eventmanagement.entities.Organizer;
 import com.shield.eventmanagement.entities.user.User;
+import com.shield.eventmanagement.exceptions.event.EventNotFoundException;
+import com.shield.eventmanagement.exceptions.location.LocationNotFoundException;
 import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundException;
 import com.shield.eventmanagement.exceptions.user.UserNotFoundException;
 import com.shield.eventmanagement.request.event.EventOrganizerLocationRequest;
 import com.shield.eventmanagement.request.event.EventRequest;
+import com.shield.eventmanagement.request.event.EventUpdateRequest;
 import com.shield.eventmanagement.services.event.EventService;
 import com.shield.eventmanagement.services.location.LocationService;
 import com.shield.eventmanagement.services.organizer.OrganizerService;
@@ -46,7 +50,7 @@ public class EventRestController {
 	OrganizerService organizerService;
 	
 	@PostMapping("/create-event")
-	public ResponseEntity<?> create(@RequestBody EventRequest eventReq) throws OrganizerNotFoundException
+	public ResponseEntity<?> create(@RequestBody EventRequest eventReq) throws OrganizerNotFoundException, LocationNotFoundException
 	{
 		Optional<Location> locationOptional = locationService.findByLocationId(eventReq.getLocationId());
 		Optional<Organizer> organizerOptional = organizerService.fetchById(eventReq.getOrganizerId());
@@ -115,13 +119,21 @@ public class EventRestController {
 		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 	
+	@PutMapping("/update-event")
+	public ResponseEntity<?> updateEvent(@RequestBody EventUpdateRequest eventUpdateRequest) throws EventNotFoundException
+	{
+		Event event = service.update(eventUpdateRequest);
+		
+		return new ResponseEntity<>(event, HttpStatus.OK);
+	}
+	
 	@GetMapping("find-by-event-id/{eventId}")
-	Optional<Event> findByEventId(@PathVariable Long eventId) {
+	Optional<Event> findByEventId(@PathVariable Long eventId) throws EventNotFoundException {
 		return service.findByEventId(eventId);
 	}
 	
 	@DeleteMapping("/delete-by-id/{eventId}")
-	public ResponseEntity<?> deleteEvent(@PathVariable Long eventId)
+	public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) throws EventNotFoundException
 	{
 		Event event = service.deleteEvent(eventId);
 		
@@ -137,7 +149,7 @@ public class EventRestController {
 	}
 
 	@GetMapping("find-attendee-by-event-id/{eventId}")
-	List<Attendee> getAttendeeByEventId(@PathVariable Long eventId) {
+	List<Attendee> getAttendeeByEventId(@PathVariable Long eventId) throws EventNotFoundException {
 		return service.getAttendeeByEventId(eventId);
 	}
 

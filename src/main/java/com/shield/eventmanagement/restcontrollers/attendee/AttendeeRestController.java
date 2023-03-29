@@ -4,6 +4,7 @@ import com.shield.eventmanagement.dao.user.UserDao;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.user.User;
+import com.shield.eventmanagement.exceptions.event.EventNotFoundException;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
 import com.shield.eventmanagement.services.event.EventService;
@@ -27,7 +28,7 @@ public class AttendeeRestController {
     UserDao userDao;
 
     @PostMapping
-    public Optional<Attendee> insertAttendee(@Valid @RequestBody AttendeeRequest attendeeReq) {
+    public Optional<Attendee> insertAttendee(@Valid @RequestBody AttendeeRequest attendeeReq) throws EventNotFoundException {
         Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
         Optional<User> user = userDao.findById(attendeeReq.getUser_id());
         if (!event.isPresent() || !user.isPresent()) return Optional.empty();

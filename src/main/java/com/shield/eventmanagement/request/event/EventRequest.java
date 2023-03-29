@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EventRequest {
 
-    @NotNull
-    private Long eventId;
-
     @NotEmpty
     private String endDate;
 

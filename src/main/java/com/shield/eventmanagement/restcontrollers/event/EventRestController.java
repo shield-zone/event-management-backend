@@ -52,6 +52,7 @@ public class EventRestController {
 	{
 		Optional<Location> locationOptional = locationService.findByLocationId(eventReq.getLocationId());
 		Optional<Organizer> organizerOptional = organizerService.fetchById(eventReq.getOrganizerId());
+		
 		if (!locationOptional.isPresent() || !organizerOptional.isPresent())
 			return ResponseEntity.status(404).body(null);
 
@@ -82,7 +83,7 @@ public class EventRestController {
 
 		Optional<User> userOptional = userService.fetchById(request.getUserId());
 		
-		if(userOptional.isEmpty())
+		if(!userOptional.isPresent())
 		{
 			throw new UserNotFoundException();
 		}
@@ -126,26 +127,6 @@ public class EventRestController {
 	@GetMapping("find-by-event-id/{eventId}")
 	Optional<Event> findByEventId(@PathVariable Long eventId) {
 		return service.findByEventId(eventId);
-	}
-	
-	@GetMapping("find-by-event-name/{eventName}") 
-	List<Event> getEventsByName(@PathVariable String eventName) {
-		return service.getEventsByName(eventName);
-	}
-	
-	@GetMapping("find-by-event-type/{eventType}")
-	List<Event> getEventsByEventType(@PathVariable String eventType) {
-		return service.getEventsByEventType(eventType);
-	}
-	
-	@GetMapping("find-by-event-price/{eventPrice}")
-	List<Event> getEventsByEventPrice(@PathVariable Double eventPrice) {
-		return service.getEventsByEventPrice(eventPrice);
-	}
-	
-	@GetMapping("find-by-event-start-date/{startDate}")
-	List<Event> getEventsByStartDate(@PathVariable String startDate) {
-		return service.getEventByStartDate(startDate);
 	}
 	
 	@DeleteMapping("/delete-by-id/{eventId}")

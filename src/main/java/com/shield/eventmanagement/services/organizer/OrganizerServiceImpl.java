@@ -137,9 +137,46 @@ public class OrganizerServiceImpl implements OrganizerService {
 	}
 
 	@Override
-	public Organizer update(OrganizerUpdateRequest organizerUpdateRequest) {
-		// TODO Auto-generated method stub
-		return null;
+	public Organizer update(OrganizerUpdateRequest organizerUpdateRequest) throws OrganizerNotFoundException, InvalidException {
+		
+		Optional<Organizer> organizerOptional = fetchById(organizerUpdateRequest.getOrganizerId()); 
+		
+		if(organizerOptional.isEmpty())
+		{
+			throw new OrganizerNotFoundException("Organizer with given details not found");
+		}
+		
+		Organizer organizer = organizerOptional.get();
+		
+		if(organizerUpdateRequest.getPhoneNumber()!=null)
+		{
+			organizer.setPhoneNumber(organizerUpdateRequest.getPhoneNumber());
+		}
+		
+		if(organizerUpdateRequest.getPresentSince()!=null)
+		{
+			organizer.setPresentSince(organizerUpdateRequest.getPresentSince());
+		}
+		
+		if(organizerUpdateRequest.getRating()!=null)
+		{
+			organizer.setRating(organizerUpdateRequest.getRating());
+		}
+		
+		if(organizerUpdateRequest.getWebsite()!=null)
+		{
+			organizer.setWebsite(organizerUpdateRequest.getWebsite());
+		}
+		
+		boolean returnValue = isValid(organizer);
+		
+		if(!returnValue)
+		{
+			throw new InvalidException("Invalid mobile number");
+		}
+		
+		organizer = organizerDao.save(organizer);
+		return organizer;
 	}
 
 }

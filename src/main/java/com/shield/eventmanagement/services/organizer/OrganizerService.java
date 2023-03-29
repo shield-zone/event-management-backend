@@ -15,7 +15,7 @@ public interface OrganizerService {
 
 	Organizer create(OrganizerRequest organizerRequest) throws InvalidException, UserNotFoundException;
 	
-	Organizer update(OrganizerUpdateRequest organizerUpdateRequest);
+	Organizer update(OrganizerUpdateRequest organizerUpdateRequest) throws OrganizerNotFoundException, InvalidException;
 	
 	String delete(Long organizerId) throws OrganizerNotFoundException;
 	

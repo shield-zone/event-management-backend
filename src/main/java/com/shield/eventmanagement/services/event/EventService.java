@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.repositories.event.EventRepository;
+import com.shield.eventmanagement.request.event.EventUpdateRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,36 @@ public class EventService {
 	public Event create(Event event)
 	{
 		event = repository.save(event);
+		return event;
+	}
+	
+	public Event update(EventUpdateRequest eventUpdateRequest)
+	{
+		Optional<Event> eventOptional = findByEventId(eventUpdateRequest.getEventId());
+		Event event = eventOptional.get();
+		
+		if(eventUpdateRequest.getEndDate()!=null && !eventUpdateRequest.getEndDate().isEmpty())
+		{
+			event.setEndDate(eventUpdateRequest.getEndDate());
+		}
+		
+		if(eventUpdateRequest.getEventName()!=null && !eventUpdateRequest.getEventName().isEmpty())
+		{
+			event.setEventName(eventUpdateRequest.getEventName());
+		}
+		
+		if(eventUpdateRequest.getStartDate()!=null && !eventUpdateRequest.getStartDate().isEmpty())
+		{
+			event.setStartDate(eventUpdateRequest.getStartDate());
+		}
+		
+		if(eventUpdateRequest.getEventPrice()!=null && eventUpdateRequest.getEventPrice()!=0)
+		{
+			event.setEventPrice(eventUpdateRequest.getEventPrice());
+		}
+		
+		event = repository.save(event);
+		
 		return event;
 	}
 	

@@ -34,7 +34,7 @@ public class OrganizerController {
 	}
 	
 	@PostMapping("/update-organizer")
-	public ResponseEntity<?> updateOrganizer(@Valid @RequestBody OrganizerUpdateRequest organizerUpdateRequest)
+	public ResponseEntity<?> updateOrganizer(@Valid @RequestBody OrganizerUpdateRequest organizerUpdateRequest) throws OrganizerNotFoundException, InvalidException
 	{
 		Organizer organizer = organizerService.update(organizerUpdateRequest);
 		

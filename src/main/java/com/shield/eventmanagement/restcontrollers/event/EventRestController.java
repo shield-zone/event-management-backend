@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundExceptio
 import com.shield.eventmanagement.exceptions.user.UserNotFoundException;
 import com.shield.eventmanagement.request.event.EventOrganizerLocationRequest;
 import com.shield.eventmanagement.request.event.EventRequest;
+import com.shield.eventmanagement.request.event.EventUpdateRequest;
 import com.shield.eventmanagement.services.event.EventService;
 import com.shield.eventmanagement.services.location.LocationService;
 import com.shield.eventmanagement.services.organizer.OrganizerService;
@@ -114,6 +116,13 @@ public class EventRestController {
 		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 	
+	@PutMapping("/update-event")
+	public ResponseEntity<?> updateEvent(@RequestBody EventUpdateRequest eventUpdateRequest)
+	{
+		Event event = service.update(eventUpdateRequest);
+		return new ResponseEntity<>(event, HttpStatus.OK);
+	}
+	
 	@GetMapping("find-by-event-id/{eventId}")
 	Optional<Event> findByEventId(@PathVariable Long eventId) {
 		return service.findByEventId(eventId);
@@ -145,6 +154,14 @@ public class EventRestController {
 		Event event = service.deleteEvent(eventId);
 		
 		return new ResponseEntity<>(event, HttpStatus.OK);
+	}
+	
+	@GetMapping("/fetch-all-events")
+	public ResponseEntity<?> fetchAll()
+	{
+		List<Event> events = service.fetchAllEvents();
+		
+		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 	
 	@GetMapping("find-attendee-by-event-id/{eventId}")

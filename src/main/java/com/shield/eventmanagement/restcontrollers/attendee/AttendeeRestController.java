@@ -1,10 +1,11 @@
 package com.shield.eventmanagement.restcontrollers.attendee;
 
+import com.shield.eventmanagement.dao.user.UserDao;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
+import com.shield.eventmanagement.entities.user.User;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
-import com.shield.eventmanagement.services.attendee.AttendeeServiceInterface;
 import com.shield.eventmanagement.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,28 +23,19 @@ public class AttendeeRestController {
     @Autowired
     EventService eventService;
 
-    @GetMapping("find-by-email/{email}")
-    public List<Attendee> findByEmail(@PathVariable String email) {
-        return service.findByEmail(email);
-    }
-
-    @GetMapping("find-by-name/{name}")
-    public List<Attendee> getAttendeesByName(@PathVariable String name) {
-        return service.findByName(name);
-    }
+    @Autowired
+    UserDao userDao;
 
     @PostMapping
     public Optional<Attendee> insertAttendee(@Valid @RequestBody AttendeeRequest attendeeReq) {
         Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
-        if (!event.isPresent()) return Optional.empty();
+        Optional<User> user = userDao.findById(attendeeReq.getUser_id());
+        if (!event.isPresent() || !user.isPresent()) return Optional.empty();
 
         Attendee attendee = Attendee
                 .builder()
-                .event(new ArrayList<>(Collections.singletonList(event.get())))
+                .event(Collections.singletonList(event.get()))
                 .user_id(attendeeReq.getUser_id())
-                .name(attendeeReq.getName())
-                .email(attendeeReq.getEmail())
-                .numberOfMember(attendeeReq.getNumberOfMember())
                 .cancelledRegistration(attendeeReq.isCancelledRegistration())
                 .build();
 

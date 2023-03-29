@@ -1,9 +1,11 @@
 package com.shield.eventmanagement.services.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.shield.eventmanagement.dao.attendee.AttendeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class EventService {
 	
 	@Autowired
 	EventRepository repository;
+
+	@Autowired
+	AttendeeDao attendeeDao;
 
 	
 	public Event create(Event event)
@@ -86,6 +91,15 @@ public class EventService {
 		Event event = findByEventId(eventId).get();
 		attendees.addAll(event.getAttendees());
 		return attendees;
+	}
+
+	public List<Event> getEventsByAttendeeId(Long id) {
+		Attendee attendee = Attendee.builder().attendeeId(id).build();
+		boolean doesAttendeeExist = attendeeDao.doAttendeeExists(attendee);
+
+		if (!doesAttendeeExist) return Collections.emptyList() ;
+
+		return repository.getEventsByAttendees(id);
 	}
 	
 	public List<Event> fetchAllEvents()

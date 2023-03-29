@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,14 +16,6 @@ public class AttendeeService implements AttendeeServiceInterface {
 
     @Autowired
     AttendeeDao dao;
-
-    public List<Attendee> findByEmail(String email) {
-        return dao.findByEmail(email);
-    }
-
-    public List<Attendee> findByName(String name) {
-        return dao.findByName(name);
-    }
 
     public Optional<Attendee> insertAttendee(Attendee attendee) {
         return dao.insertAttendee(attendee);

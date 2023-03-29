@@ -20,4 +20,6 @@ public interface EventService {
     List<Event> fetchAllEvents();
 	
 	Event deleteEvent(Long eventId);
+	
+    List<Event> getEventsByAttendeeId(Long id);
 }

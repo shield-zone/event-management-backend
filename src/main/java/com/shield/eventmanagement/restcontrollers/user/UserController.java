@@ -1,6 +1,7 @@
 package com.shield.eventmanagement.restcontrollers.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -66,9 +67,13 @@ public class UserController {
 	@GetMapping("/find-by-id")
 	public ResponseEntity<?> findById(@RequestParam("userId") Long userId) throws UserNotFoundException
 	{
-		User user = userService.fetchById(userId);
+		Optional<User> user = userService.fetchById(userId);
+		if(user.isEmpty())
+		{
+			throw new UserNotFoundException();
+		}
 		
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 	
 	
@@ -83,7 +88,8 @@ public class UserController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId) throws UserNotFoundException
 	{
-		User user = userService.fetchById(userId);
+		Optional<User> userOptional = userService.fetchById(userId);
+		User user = userOptional.get();
 		user.setActive(false);
 		user = userService.update(user);
 		String message = "User Deleted Successfully";

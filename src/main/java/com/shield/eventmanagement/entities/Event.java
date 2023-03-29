@@ -32,6 +32,8 @@ public class Event {
 	
 	private Double eventPrice;
 	
+	private boolean isDeleted;
+	
 	@ManyToMany(mappedBy = "event")
 	@JsonManagedReference
 	private List<Attendee> attendees = new ArrayList<>();

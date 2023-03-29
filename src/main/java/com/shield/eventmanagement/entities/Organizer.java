@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 public class Organizer {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "organizer_id")
 	private Long organizerId;
 	

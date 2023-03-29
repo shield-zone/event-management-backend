@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
-import com.shield.eventmanagement.entities.Location;
 import com.shield.eventmanagement.repositories.event.EventRepository;
-import com.shield.eventmanagement.services.location.LocationService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -57,6 +55,21 @@ public class EventService {
 		Event event = findByEventId(eventId).get();
 		attendees.addAll(event.getAttendees());
 		return attendees;
+	}
+	
+	public List<Event> fetchAllEvents()
+	{
+		List<Event> events = repository.findAll();
+		return events;
+	}
+	
+	public Event deleteEvent(Long eventId){
+		
+		Optional<Event> eventOptional = findByEventId(eventId);
+		Event event = eventOptional.get();
+		event.setDeleted(true);
+		
+		return event;
 	}
 
 }

@@ -35,10 +35,8 @@ public class EventOrganizerLocationRequest {
     private String state;
 
     @NotNull
-    private Long id;
-    private String organizerName;
-    private String email;
-
+    private Long userId;
+    
     @Size(min=10,max=10, message="Contact number should be of 10 digits")
     private String phoneNumber;
 

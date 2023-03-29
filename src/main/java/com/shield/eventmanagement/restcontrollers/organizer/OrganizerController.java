@@ -56,19 +56,6 @@ public class OrganizerController {
 		return new ResponseEntity<>(organizer, HttpStatus.OK);
 	}
 
-	@GetMapping("/fetch-by-rating")
-	public ResponseEntity<?> fetByRating(@RequestParam("rating") String rating) {
-		List<Organizer> organizersList = organizerService.fetchByRating(rating);
-
-		return new ResponseEntity<>(organizersList, HttpStatus.OK);
-	}
-
-	@GetMapping("/fetch-by-website")
-	public ResponseEntity<?> fetchByWebsite(@RequestParam("website") String website) throws OrganizerNotFoundException {
-		Organizer organizer = organizerService.fetchByWebsite(website);
-
-		return new ResponseEntity<>(organizer, HttpStatus.OK);
-	}
 
 	@GetMapping("/delete-by-id")
 	public ResponseEntity<?> deleteById(@RequestParam("id") Long organizerId) throws OrganizerNotFoundException {
@@ -86,11 +73,12 @@ public class OrganizerController {
 		return new ResponseEntity<>(organizerList, HttpStatus.OK);
 	}
 	
-	@GetMapping("/fetch-all-events")
-	public ResponseEntity<?> fetchAllEvents(){
-		List<Event> eventList = organizerService.fetchAllEvent();
+	@GetMapping("/fetch-event-by-organizer/{organizerId}")
+	public ResponseEntity<?> fetchEventByOrganizer(@PathVariable("organizerId") Long organizerId)
+	{
+		List<Event> events = organizerService.fetchEventByOrganizerId(organizerId);
 		
-		return new ResponseEntity<>(eventList, HttpStatus.OK);
+		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 
 }

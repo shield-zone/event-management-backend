@@ -1,14 +1,17 @@
 package com.shield.eventmanagement.services.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shield.eventmanagement.dao.attendee.AttendeeDao;
 import com.shield.eventmanagement.entities.Attendee;
 import com.shield.eventmanagement.entities.Event;
+import com.shield.eventmanagement.exceptions.event.EventNotFoundException;
 import com.shield.eventmanagement.repositories.event.EventRepository;
 import com.shield.eventmanagement.request.event.EventUpdateRequest;
 
@@ -18,6 +21,8 @@ public class EventServiceImpl implements EventService {
 	@Autowired
 	EventRepository repository;
 
+	@Autowired
+	AttendeeDao attendeeDao;
 	
 	@Override
 	public Event create(Event event)
@@ -27,9 +32,15 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Event update(EventUpdateRequest eventUpdateRequest)
+	public Event update(EventUpdateRequest eventUpdateRequest) throws EventNotFoundException
 	{
 		Optional<Event> eventOptional = findByEventId(eventUpdateRequest.getEventId());
+		
+		if(!eventOptional.isPresent())
+		{
+			throw new EventNotFoundException("Invalid event Id can't proceed to update");
+		}
+		
 		Event event = eventOptional.get();
 		
 		if(eventUpdateRequest.getEndDate()!=null && !eventUpdateRequest.getEndDate().isEmpty())
@@ -58,12 +69,19 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Optional<Event> findByEventId(Long eventId) {
+	public Optional<Event> findByEventId(Long eventId) throws EventNotFoundException {
+		
+		Optional<Event> eventOptional = findByEventId(eventId);
+		
+		if(!eventOptional.isPresent())
+		{
+			throw new EventNotFoundException("Invalid event Id can't proceed to update");
+		}
 		return repository.findById(eventId);
 	}
 	
 	@Override
-	public List<Attendee> getAttendeeByEventId(Long eventId) {
+	public List<Attendee> getAttendeeByEventId(Long eventId) throws EventNotFoundException {
 		List<Attendee> attendees = new ArrayList<Attendee>();
 		Event event = findByEventId(eventId).get();
 		attendees.addAll(event.getAttendees());
@@ -78,12 +96,23 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Event deleteEvent(Long eventId){
+	public Event deleteEvent(Long eventId) throws EventNotFoundException{
 		
 		Optional<Event> eventOptional = findByEventId(eventId);
 		Event event = eventOptional.get();
 		event.setDeleted(true);
 		
 		return event;
+	}
+	
+	@Override
+	public List<Event> getEventsByAttendeeId(Long id) {
+		Attendee attendee = Attendee.builder().attendeeId(id).build();
+		boolean doesAttendeeExist = attendeeDao.doAttendeeExists(attendee);
+
+		if (!doesAttendeeExist)
+			return Collections.emptyList();
+
+		return repository.getEventsByAttendees(id);
 	}
 }

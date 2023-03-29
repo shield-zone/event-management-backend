@@ -23,11 +23,7 @@ public interface OrganizerService {
 	
     Organizer fetchByUsername(String username) throws OrganizerNotFoundException;
 	
-	Organizer fetchByWebsite(String website) throws OrganizerNotFoundException;
-	
-	List<Organizer> fetchByRating(String rating);	
-	
 	List<Organizer> fetchAll();
 	
-	List<Event> fetchAllEvent();
+	List<Event> fetchEventByOrganizerId(Long id);
 }

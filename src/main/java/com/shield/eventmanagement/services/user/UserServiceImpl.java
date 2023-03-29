@@ -1,6 +1,7 @@
 package com.shield.eventmanagement.services.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(User userUpdateRequest) throws UserNotFoundException {
-		User user = userDao.findById(userUpdateRequest.getUserId());
+		Optional<User> userOptional = userDao.findById(userUpdateRequest.getUserId());
 
-		if (user == null) {
+		if (userOptional.isEmpty()) {
 			throw new UserNotFoundException("User with given Id not found");
 		}
-
+		User user = userOptional.get();
 		if (userUpdateRequest.getName() != null) {
 			user.setName(userUpdateRequest.getName());
 		}
@@ -50,10 +51,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User fetchById(Long userId) throws UserNotFoundException {
-		User user = userDao.findById(userId);
+	public Optional<User> fetchById(Long userId) throws UserNotFoundException {
+		Optional<User> user = userDao.findById(userId);
 
-		if (user == null) {
+		if (user.isEmpty()) {
 			throw new UserNotFoundException("User with the given Id not found");
 		}
 		return user;

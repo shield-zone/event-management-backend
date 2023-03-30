@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventOrganizerLocationRequest {
-    @NotNull
-    private Long eventId;
+
     @NotEmpty
     private String endDate;
     @NotEmpty

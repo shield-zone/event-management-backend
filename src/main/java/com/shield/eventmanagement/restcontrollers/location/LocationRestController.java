@@ -2,6 +2,8 @@ package com.shield.eventmanagement.restcontrollers.location;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class LocationRestController {
 	LocationService service;
 
 	@PostMapping("/create-location")
-	public ResponseEntity<?> createLocation(@RequestBody LocationRequest locationReq) {
+	public ResponseEntity<?> createLocation(@Valid@RequestBody LocationRequest locationReq) {
 		Location location = Location.builder().address(locationReq.getAddress()).country(locationReq.getCountry())
 				.locationName(locationReq.getLocationName()).pincode(locationReq.getPincode())
 				.state(locationReq.getState()).build();
@@ -38,7 +40,7 @@ public class LocationRestController {
 	}
 
 	@PutMapping("/update-location")
-	public ResponseEntity<?> updateLocation(@RequestBody LocationUpdateRequest locationUpdateRequest) throws LocationNotFoundException {
+	public ResponseEntity<?> updateLocation(@Valid@RequestBody LocationUpdateRequest locationUpdateRequest) throws LocationNotFoundException {
 		Location location = service.update(locationUpdateRequest);
 
 		return new ResponseEntity<>(location, HttpStatus.OK);

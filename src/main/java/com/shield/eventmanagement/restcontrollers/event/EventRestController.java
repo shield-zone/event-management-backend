@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import com.shield.eventmanagement.exceptions.event.EventNotFoundException;
 import com.shield.eventmanagement.exceptions.location.LocationNotFoundException;
 import com.shield.eventmanagement.exceptions.organizer.OrganizerNotFoundException;
 import com.shield.eventmanagement.exceptions.user.UserNotFoundException;
+import com.shield.eventmanagement.repositories.organizer.OrganizerRepository;
 import com.shield.eventmanagement.request.event.EventOrganizerLocationRequest;
 import com.shield.eventmanagement.request.event.EventRequest;
 import com.shield.eventmanagement.request.event.EventUpdateRequest;
@@ -41,6 +44,9 @@ public class EventRestController {
 	UserService userService;
 	
 	@Autowired
+	OrganizerRepository organizerRepository;
+	
+	@Autowired
 	EventService service;
 
 	@Autowired
@@ -50,7 +56,7 @@ public class EventRestController {
 	OrganizerService organizerService;
 	
 	@PostMapping("/create-event")
-	public ResponseEntity<?> create(@RequestBody EventRequest eventReq) throws OrganizerNotFoundException, LocationNotFoundException
+	public ResponseEntity<?> create(@Valid@RequestBody EventRequest eventReq) throws OrganizerNotFoundException, LocationNotFoundException
 	{
 		Optional<Location> locationOptional = locationService.findByLocationId(eventReq.getLocationId());
 		Optional<Organizer> organizerOptional = organizerService.fetchById(eventReq.getOrganizerId());
@@ -74,7 +80,7 @@ public class EventRestController {
 	}
 
 	@PostMapping("create-event-organizer-location")
-	public ResponseEntity<?> createEventOrganizerLocation(@RequestBody EventOrganizerLocationRequest request) throws UserNotFoundException {
+	public ResponseEntity<?> createEventOrganizerLocation(@Valid@RequestBody EventOrganizerLocationRequest request) throws UserNotFoundException {
 		Location location = Location.builder()
 				.address(request.getAddress())
 				.country(request.getCountry())
@@ -91,8 +97,10 @@ public class EventRestController {
 		}
 		
 		User user = userOptional.get();
-		
-		Organizer organizer = Organizer.builder()
+		Organizer organizer = null;
+		if(!organizerRepository.findById(user.getUserId()).isPresent())
+		{
+				organizer = Organizer.builder()
 				.organizerId(user.getUserId())
 				.organizerName(user.getName())
 				.emailId(user.getUserName())
@@ -102,6 +110,11 @@ public class EventRestController {
 				.rating(request.getRating())
 				.website(request.getWebsite())
 				.build();
+		}
+		else
+		{
+			organizer = organizerRepository.findById(user.getUserId()).get();
+		}
 
 		Event event = Event.builder()
 				.endDate(request.getEndDate())
@@ -120,7 +133,7 @@ public class EventRestController {
 	}
 	
 	@PutMapping("/update-event")
-	public ResponseEntity<?> updateEvent(@RequestBody EventUpdateRequest eventUpdateRequest) throws EventNotFoundException
+	public ResponseEntity<?> updateEvent(@Valid@RequestBody EventUpdateRequest eventUpdateRequest) throws EventNotFoundException
 	{
 		Event event = service.update(eventUpdateRequest);
 		

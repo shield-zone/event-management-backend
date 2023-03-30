@@ -71,13 +71,13 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Optional<Event> findByEventId(Long eventId) throws EventNotFoundException {
 		
-		Optional<Event> eventOptional = findByEventId(eventId);
+		Optional<Event> eventOptional = repository.findById(eventId);
 		
 		if(!eventOptional.isPresent())
 		{
 			throw new EventNotFoundException("Invalid event Id can't proceed to update");
 		}
-		return repository.findById(eventId);
+		return eventOptional;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import com.shield.eventmanagement.entities.Event;
 import com.shield.eventmanagement.entities.user.User;
 import com.shield.eventmanagement.exceptions.event.EventNotFoundException;
 import com.shield.eventmanagement.request.attendee.AttendeeRequest;
+import com.shield.eventmanagement.request.attendee.AttendeeUpdateRequest;
 import com.shield.eventmanagement.services.attendee.AttendeeService;
 import com.shield.eventmanagement.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +45,23 @@ public class AttendeeRestController {
     }
 
     @PutMapping
-    public ResponseEntity<Attendee> updateAttendee(@RequestBody Attendee attendee) {
-        Optional<Attendee> optionalAttendee = service.updateAttendee(attendee);
+    public ResponseEntity<Attendee> updateAttendee(@RequestBody AttendeeUpdateRequest attendeeReq) throws EventNotFoundException {
+        Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
+        Optional<User> user = userDao.findById(attendeeReq.getUserId());
+        if (!event.isPresent() || !user.isPresent()) return ResponseEntity.status(204).body(null);
+
+        Optional<Attendee> optionalAttendee = service.updateAttendee(
+                Attendee.builder()
+                        .attendeeId(attendeeReq.getAttendeeId())
+                        .event(Collections.singletonList(event.get()))
+                        .user_id(user.get().getUserId())
+                        .cancelledRegistration(attendeeReq.isCancelRegistration())
+                        .build()
+        );
         return optionalAttendee.map(
                 value -> ResponseEntity.status(200).body(value)
         ).orElseGet(
-                () -> ResponseEntity.status(404).body(null)
+                () -> ResponseEntity.status(417).body(null)
         );
     }
 }

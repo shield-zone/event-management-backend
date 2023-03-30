@@ -101,7 +101,7 @@ public class EventServiceImpl implements EventService {
 		Optional<Event> eventOptional = findByEventId(eventId);
 		Event event = eventOptional.get();
 		event.setDeleted(true);
-		
+		event = repository.save(event);
 		return event;
 	}
 	

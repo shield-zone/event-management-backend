@@ -17,7 +17,7 @@ public class AttendeeUpdateRequest {
     private long eventId;
 
     @NotNull
-    private long userId;
+    private long user_id;
 
     private boolean cancelRegistration;
 }

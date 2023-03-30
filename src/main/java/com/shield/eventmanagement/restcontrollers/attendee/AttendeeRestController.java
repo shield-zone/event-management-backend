@@ -47,15 +47,15 @@ public class AttendeeRestController {
     @PutMapping
     public ResponseEntity<Attendee> updateAttendee(@RequestBody AttendeeUpdateRequest attendeeReq) throws EventNotFoundException {
         Optional<Event> event = eventService.findByEventId(attendeeReq.getEventId());
-        Optional<User> user = userDao.findById(attendeeReq.getUserId());
-        if (!event.isPresent() || !user.isPresent()) return ResponseEntity.status(204).body(null);
+        Optional<User> user = userDao.findById(attendeeReq.getUser_id());
+        if (!event.isPresent() || !user.isPresent()) return ResponseEntity.status(417).body(null);
 
         Optional<Attendee> optionalAttendee = service.updateAttendee(
                 Attendee.builder()
                         .attendeeId(attendeeReq.getAttendeeId())
                         .event(Collections.singletonList(event.get()))
                         .user_id(user.get().getUserId())
-                        .cancelledRegistration(attendeeReq.isCancelRegistration())
+                        .cancelledRegistration(true)
                         .build()
         );
         return optionalAttendee.map(

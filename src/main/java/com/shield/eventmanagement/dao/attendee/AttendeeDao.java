@@ -15,6 +15,12 @@ public class AttendeeDao implements AttendeeDaoInterface {
     AttendeeRepository repository;
 
     public Optional<Attendee> insertAttendee(Attendee attendee) {
+        if (doAttendeeExists(attendee)) return Optional.empty();
+        return Optional.of(repository.saveAndFlush(attendee));
+    }
+
+    public Optional<Attendee> updateAttendee(Attendee attendee) {
+        System.out.println("------------->" + attendee.getUser_id() + " ---- " + attendee.isCancelledRegistration());
         if (!doAttendeeExists(attendee)) return Optional.empty();
         return Optional.of(repository.saveAndFlush(attendee));
     }

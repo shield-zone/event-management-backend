@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface AttendeeDaoInterface {
     Optional<Attendee> insertAttendee(Attendee attendee);
+    Optional<Attendee> updateAttendee(Attendee attendee);
     boolean doAttendeeExists(Attendee attendee);
 }

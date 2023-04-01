@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<?> userNotFound(UserNotFoundException ex) {
-		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.BAD_REQUEST)
+		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.NOT_FOUND)
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
@@ -73,14 +73,14 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EventNotFoundException.class)
 	public ResponseEntity<?> eventNotFoundExceptionHandler(EventNotFoundException ex) {
-		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.BAD_REQUEST)
+		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.NOT_FOUND)
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(LocationNotFoundException.class)
 	public ResponseEntity<?> locationNotFoundExceptionHandler(LocationNotFoundException ex) {
-		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.BAD_REQUEST)
+		ErrorResponse response = ErrorResponse.builder().message(ex.getMessage()).status(HttpStatus.NOT_FOUND)
 				.build();
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
